@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -59,6 +60,23 @@ public class ViewCentroActivity extends AppCompatActivity {
         telefono.setText(centro.getTelefono());
         mail.setText(centro.getEmail());
 
+        // Agrega el OnClickListener al campo de teléfono
+        telefono.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phoneNumber = telefono.getText().toString();
+                dialPhoneNumber(phoneNumber);
+            }
+        });
+
+    }
+
+    private void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
 

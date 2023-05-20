@@ -6,7 +6,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import lombok.AllArgsConstructor;
-import lombok.Generated;
 
 @Entity
 @AllArgsConstructor
@@ -26,8 +25,10 @@ public class Centro {
     private String email;
     @ColumnInfo
     private String telefono;
+    @ColumnInfo
+    private String photoUri;
 
-    public Centro(@NonNull String nombre, String direccion, String numRegistro, String telefono, String email) {
+    public Centro() {
         this.nombre = nombre;
         this.direccion = direccion;
         this.numRegistro = numRegistro;
@@ -82,5 +83,13 @@ public class Centro {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 }

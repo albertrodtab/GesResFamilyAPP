@@ -7,6 +7,7 @@
     tools:context=".ViewCentroActivity">
 
     <LinearLayout
+        android:id="@+id/lyViewCentro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -40,6 +41,7 @@
             android:id="@+id/tvTelefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:padding="10dp"
             android:text="Teléfono" />
 
@@ -59,8 +61,7 @@
                 android:id="@+id/ivCentro"
                 android:layout_width="56dp"
                 android:layout_height="258dp"
-                android:layout_weight="1"
-                app:srcCompat="@mipmap/ic_centro" />
+                android:layout_weight="1" />
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mvCentro"

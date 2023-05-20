@@ -3,6 +3,7 @@ package com.alberto.gesresfamilyapp.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.alberto.gesresfamilyapp.R;
 import com.alberto.gesresfamilyapp.RegisterCentroActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.MapView;
 
 
@@ -55,6 +57,23 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         holder.centroMail.setText(centroList.get(position).getEmail());
         holder.centroRegistro.setText(centroList.get(position).getNumRegistro());
         holder.centroTelefono.setText(centroList.get(position).getTelefono());
+
+
+        Centro centro = centroList.get(position);
+
+        // Cargar y mostrar la foto en el ImageView
+        String photoUriString = centro.getPhotoUri();
+        if (photoUriString != null) {
+            Uri photoUri = Uri.parse(photoUriString);
+            Glide.with(context)
+                    .load(photoUri)
+                    .into(holder.centroImagen);
+        } else {
+            // Mostrar una imagen de placeholder si no hay foto disponible
+            Glide.with(context)
+                    .load(R.drawable.icons8_city_buildings_100)
+                    .into(holder.centroImagen);
+        }
     }
 
     @Override
