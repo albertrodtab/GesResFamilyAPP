@@ -15,84 +15,84 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.R;
-import com.alberto.gesresfamilyapp.RegisterCentroActivity;
+import com.alberto.gesresfamilyapp.RegisterProfesionalActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
-import com.alberto.gesresfamilyapp.domain.Centro;
+import com.alberto.gesresfamilyapp.domain.Profesional;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.MapView;
 
-
+import java.util.Date;
 import java.util.List;
 
-public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHolder>{
+public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.ProfesionalHolder>{
 
-    private List<Centro> centroList;
+    private List<Profesional> profesionalList;
     //esto sirve para guardar la posición para luego poder hacer cosas con ellos.
     private Context context;
 
     private int selectedPosition;
 
-    public CentroAdapter(Context context, List<Centro> dataList) {
+    public ProfesionalAdapter(Context context, List<Profesional> dataList) {
         this.context = context;
-        this.centroList = dataList;
+        this.profesionalList = dataList;
 
         //esto indica que no hay ninguno seleccionado
         selectedPosition = -1;
     }
 
-    //Patron Holder (ESTO ESTOY OBLIGADO A HACERLO SIEMPRE)
+    //Patron Holder (ESTO
+    // ESTOY OBLIGADO A HACERLO SIEMPRE)
     //metodo que crea cada estructura de layout donde iran los datos de cada cnetro.
     @Override
-    public CentroHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public ProfesionalHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_view_centro, parent, false);
-        return new CentroHolder(view);
+                .inflate(R.layout.activity_view_profesional, parent, false);
+        return new ProfesionalHolder(view);
     }
 
     //hace corresponder cada elemento de la lista para decir como pintarlo en cada elemento del layout
     @Override
-    public void onBindViewHolder(CentroHolder holder, int position){
-        holder.centroNombre.setText(centroList.get(position).getNombre());
-        holder.centroDireccion.setText(centroList.get(position).getDireccion());
-        holder.centroMail.setText(centroList.get(position).getEmail());
-        holder.centroRegistro.setText(centroList.get(position).getNumRegistro());
-        holder.centroTelefono.setText(centroList.get(position).getTelefono());
-        boolean tieneWifi = centroList.get(position).getTieneWifi();
-        String wifiStatus = tieneWifi ? "Tiene Wi-Fi" : "No tiene Wi-Fi";
-        holder.centroWifi.setText(wifiStatus);
+    public void onBindViewHolder(ProfesionalHolder holder, int position){
+        holder.profesionalNombre.setText(profesionalList.get(position).getNombre());
+        holder.profesionalApellidos.setText(profesionalList.get(position).getApellidos());
+        holder.profesionalDni.setText(profesionalList.get(position).getDni());
+        Date fechaNacimiento = profesionalList.get(position).getFechaNacimiento();
+        String fechaNacimientoString = "";
+        if (fechaNacimiento != null) {
+            fechaNacimientoString = fechaNacimiento.toString(); // Convertir Date a String
+        }
+        holder.profesionalFechaNac.setText(fechaNacimientoString);
+        holder.profesionalCategoria.setText(profesionalList.get(position).getCategoria());
 
-
-        Centro centro = centroList.get(position);
+        Profesional profesional = profesionalList.get(position);
 
         // Cargar y mostrar la foto en el ImageView
-        String photoUriString = centro.getPhotoUri();
+        String photoUriString = profesional.getPhotoUri();
         if (photoUriString != null) {
             Uri photoUri = Uri.parse(photoUriString);
             Glide.with(context)
                     .load(photoUri)
-                    .into(holder.centroImagen);
+                    .into(holder.profesionalImagen);
         } else {
             // Mostrar una imagen de placeholder si no hay foto disponible
             Glide.with(context)
                     .load(R.drawable.icons8_city_buildings_100)
-                    .into(holder.centroImagen);
+                    .into(holder.profesionalImagen);
         }
     }
 
     @Override
     public int getItemCount() {
-        return centroList.size();
+        return profesionalList.size();
     }
 
-    public class CentroHolder extends RecyclerView.ViewHolder{
-        public TextView centroNombre;
-        public TextView centroDireccion;
-        public TextView centroTelefono;
-        public TextView centroMail;
-        public TextView centroRegistro;
-        public TextView centroWifi;
-        public ImageView centroImagen;
-        public MapView centroMap;
+    public class ProfesionalHolder extends RecyclerView.ViewHolder{
+        public TextView profesionalNombre;
+        public TextView profesionalApellidos;
+        public TextView profesionalDni;
+        public TextView profesionalCategoria;
+        public TextView profesionalFechaNac;
+        public ImageView profesionalImagen;
+
         //public CheckBox taskDone;
         //public Button doTaskButton;
         //public Button seeDetailsButton;
@@ -100,18 +100,17 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         public View parentView;
         public Button btMod;
 
-        public CentroHolder(View view) {
+        public ProfesionalHolder(View view) {
             super(view);
             parentView = view;
 
-            centroNombre = view.findViewById(R.id.tvNombre);
-            centroDireccion = view.findViewById(R.id.tvDireccion);
-            centroRegistro = view.findViewById(R.id.tvNumRegistro);
-            centroTelefono = view.findViewById(R.id.tvTelefono);
-            centroMail = view.findViewById(R.id.tvEmail);
-            centroWifi = view.findViewById(R.id.tvWifi);
-            centroImagen = view.findViewById(R.id.ivCentro);
-            centroMap = view.findViewById(R.id.mvCentro);
+            profesionalNombre = view.findViewById(R.id.tvNombre);
+            profesionalApellidos = view.findViewById(R.id.tvApellidos);
+            profesionalDni = view.findViewById(R.id.tvDni);
+            profesionalFechaNac = view.findViewById(R.id.tvProfesionalFechaNac);
+            profesionalCategoria = view.findViewById(R.id.tvCategoria);
+            profesionalImagen = view.findViewById(R.id.ivProfesional);
+
 
             btDelete = view.findViewById(R.id.btDelete);
 
@@ -129,9 +128,9 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
             //seeDetailsButton.setOnClickListener(v -> seeDetails(getAdapterPosition()));
 
             //click on button (remove task from de list).
-            btDelete.setOnClickListener(v -> deleteCentro(getAdapterPosition()));
+            btDelete.setOnClickListener(v -> deleteProfesional(getAdapterPosition()));
 
-            btMod.setOnClickListener(v-> modifyCentro(getAdapterPosition()));
+            btMod.setOnClickListener(v-> modifyProfesional(getAdapterPosition()));
         }
 
 /*        private void doTask(int position){
@@ -156,17 +155,17 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
         }*/
 
-        private void deleteCentro(int position){
+        private void deleteProfesional(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el centro")
-                    .setTitle("Borar Centro")
+            builder.setMessage("Estas seguro de Borrar el Profesional")
+                    .setTitle("Confirmar Borrado")
                     .setPositiveButton("Si", (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
-                        Centro centro = centroList.get(position);
-                        db.centroDao().delete(centro);
+                        Profesional profesional = profesionalList.get(position);
+                        db.profesionalDao().delete(profesional);
 
-                        centroList.remove(position);
+                        profesionalList.remove(position);
                         notifyItemRemoved(position);
                     })
                     .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
@@ -174,22 +173,21 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
             dialog.show();
         }
 
-        private void modifyCentro(int position) {
+        private void modifyProfesional(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el centro?")
+            builder.setMessage("¿Deseas modificar el profesional?")
                     .setTitle("Confirmar Modificación")
                     .setPositiveButton("Sí", (dialog, id) -> {
-                        Centro centro = centroList.get(position);
+                        Profesional profesional = profesionalList.get(position);
 
-                        Intent intent = new Intent(context, RegisterCentroActivity.class);
-                        intent.putExtra("modify_centro", true);
-                        intent.putExtra("id", centro.getId());
-                        intent.putExtra("nombre", centro.getNombre());
-                        intent.putExtra("direccion", centro.getDireccion());
-                        intent.putExtra("num_registro", centro.getNumRegistro());
-                        intent.putExtra("telefono", centro.getTelefono());
-                        intent.putExtra("email", centro.getEmail());
-                        intent.putExtra("tieneWifi", centro.getTieneWifi());
+                        Intent intent = new Intent(context, RegisterProfesionalActivity.class);
+                        intent.putExtra("modify_profesional", true);
+                        intent.putExtra("id", profesional.getId());
+                        intent.putExtra("nombre", profesional.getNombre());
+                        intent.putExtra("apellidos", profesional.getApellidos());
+                        intent.putExtra("dni", profesional.getDni());
+                        intent.putExtra("fechaNac", profesional.getFechaNacimiento());
+                        intent.putExtra("categoria", profesional.getCategoria());
 
                         context.startActivity(intent);
                     })

@@ -15,26 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.R;
-import com.alberto.gesresfamilyapp.RegisterCentroActivity;
+import com.alberto.gesresfamilyapp.RegisterResidenteActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
-import com.alberto.gesresfamilyapp.domain.Centro;
+import com.alberto.gesresfamilyapp.domain.Residente;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.MapView;
 
-
+import java.util.Date;
 import java.util.List;
 
-public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHolder>{
+public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.ResidenteHolder>{
 
-    private List<Centro> centroList;
+    private List<Residente> residenteList;
     //esto sirve para guardar la posición para luego poder hacer cosas con ellos.
     private Context context;
 
     private int selectedPosition;
 
-    public CentroAdapter(Context context, List<Centro> dataList) {
+    public ResidenteAdapter(Context context, List<Residente> dataList) {
         this.context = context;
-        this.centroList = dataList;
+        this.residenteList = dataList;
 
         //esto indica que no hay ninguno seleccionado
         selectedPosition = -1;
@@ -43,56 +42,56 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     //Patron Holder (ESTO ESTOY OBLIGADO A HACERLO SIEMPRE)
     //metodo que crea cada estructura de layout donde iran los datos de cada cnetro.
     @Override
-    public CentroHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public ResidenteHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_view_centro, parent, false);
-        return new CentroHolder(view);
+                .inflate(R.layout.activity_view_residente, parent, false);
+        return new ResidenteHolder(view);
     }
 
     //hace corresponder cada elemento de la lista para decir como pintarlo en cada elemento del layout
     @Override
-    public void onBindViewHolder(CentroHolder holder, int position){
-        holder.centroNombre.setText(centroList.get(position).getNombre());
-        holder.centroDireccion.setText(centroList.get(position).getDireccion());
-        holder.centroMail.setText(centroList.get(position).getEmail());
-        holder.centroRegistro.setText(centroList.get(position).getNumRegistro());
-        holder.centroTelefono.setText(centroList.get(position).getTelefono());
-        boolean tieneWifi = centroList.get(position).getTieneWifi();
-        String wifiStatus = tieneWifi ? "Tiene Wi-Fi" : "No tiene Wi-Fi";
-        holder.centroWifi.setText(wifiStatus);
+    public void onBindViewHolder(ResidenteHolder holder, int position){
+        holder.residenteNombre.setText(residenteList.get(position).getNombre());
+        holder.residenteApellidos.setText(residenteList.get(position).getApellidos());
+        holder.residenteDni.setText(residenteList.get(position).getDni());
+        Date fechaNacimiento = residenteList.get(position).getFechaNacimiento();
+        String fechaNacimientoString = "";
+        if (fechaNacimiento != null) {
+            fechaNacimientoString = fechaNacimiento.toString(); // Convertir Date a String
+        }
+        holder.residenteFechaNac.setText(fechaNacimientoString);
+        holder.residenteSexo.setText(residenteList.get(position).getSexo());
 
 
-        Centro centro = centroList.get(position);
+        Residente residente = residenteList.get(position);
 
         // Cargar y mostrar la foto en el ImageView
-        String photoUriString = centro.getPhotoUri();
+        String photoUriString = residente.getPhotoUri();
         if (photoUriString != null) {
             Uri photoUri = Uri.parse(photoUriString);
             Glide.with(context)
                     .load(photoUri)
-                    .into(holder.centroImagen);
+                    .into(holder.residenteImagen);
         } else {
             // Mostrar una imagen de placeholder si no hay foto disponible
             Glide.with(context)
                     .load(R.drawable.icons8_city_buildings_100)
-                    .into(holder.centroImagen);
+                    .into(holder.residenteImagen);
         }
     }
 
     @Override
     public int getItemCount() {
-        return centroList.size();
+        return residenteList.size();
     }
 
-    public class CentroHolder extends RecyclerView.ViewHolder{
-        public TextView centroNombre;
-        public TextView centroDireccion;
-        public TextView centroTelefono;
-        public TextView centroMail;
-        public TextView centroRegistro;
-        public TextView centroWifi;
-        public ImageView centroImagen;
-        public MapView centroMap;
+    public class ResidenteHolder extends RecyclerView.ViewHolder{
+        public TextView residenteNombre;
+        public TextView residenteApellidos;
+        public TextView residenteSexo;
+        public TextView residenteDni;
+        public TextView residenteFechaNac;
+        public ImageView residenteImagen;
         //public CheckBox taskDone;
         //public Button doTaskButton;
         //public Button seeDetailsButton;
@@ -100,18 +99,16 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         public View parentView;
         public Button btMod;
 
-        public CentroHolder(View view) {
+        public ResidenteHolder(View view) {
             super(view);
             parentView = view;
 
-            centroNombre = view.findViewById(R.id.tvNombre);
-            centroDireccion = view.findViewById(R.id.tvDireccion);
-            centroRegistro = view.findViewById(R.id.tvNumRegistro);
-            centroTelefono = view.findViewById(R.id.tvTelefono);
-            centroMail = view.findViewById(R.id.tvEmail);
-            centroWifi = view.findViewById(R.id.tvWifi);
-            centroImagen = view.findViewById(R.id.ivCentro);
-            centroMap = view.findViewById(R.id.mvCentro);
+            residenteNombre = view.findViewById(R.id.tvNombre);
+            residenteApellidos = view.findViewById(R.id.tvApellidos);
+            residenteDni = view.findViewById(R.id.tvDni);
+            residenteFechaNac = view.findViewById(R.id.tvResidenteFechaNac);
+            residenteSexo = view.findViewById(R.id.tvSexo);
+            residenteImagen = view.findViewById(R.id.ivResidenteReg);
 
             btDelete = view.findViewById(R.id.btDelete);
 
@@ -129,9 +126,9 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
             //seeDetailsButton.setOnClickListener(v -> seeDetails(getAdapterPosition()));
 
             //click on button (remove task from de list).
-            btDelete.setOnClickListener(v -> deleteCentro(getAdapterPosition()));
+            btDelete.setOnClickListener(v -> deleteResidente(getAdapterPosition()));
 
-            btMod.setOnClickListener(v-> modifyCentro(getAdapterPosition()));
+            btMod.setOnClickListener(v-> modifyResidente(getAdapterPosition()));
         }
 
 /*        private void doTask(int position){
@@ -156,17 +153,17 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
         }*/
 
-        private void deleteCentro(int position){
+        private void deleteResidente(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el centro")
-                    .setTitle("Borar Centro")
+            builder.setMessage("Estas seguro de Borrar el residente")
+                    .setTitle("Borrar Residente")
                     .setPositiveButton("Si", (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
-                        Centro centro = centroList.get(position);
-                        db.centroDao().delete(centro);
+                        Residente residente = residenteList.get(position);
+                        db.residenteDao().delete(residente);
 
-                        centroList.remove(position);
+                        residenteList.remove(position);
                         notifyItemRemoved(position);
                     })
                     .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
@@ -174,22 +171,21 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
             dialog.show();
         }
 
-        private void modifyCentro(int position) {
+        private void modifyResidente(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el centro?")
+            builder.setMessage("¿Deseas modificar el Residente?")
                     .setTitle("Confirmar Modificación")
                     .setPositiveButton("Sí", (dialog, id) -> {
-                        Centro centro = centroList.get(position);
+                        Residente residente = residenteList.get(position);
 
-                        Intent intent = new Intent(context, RegisterCentroActivity.class);
-                        intent.putExtra("modify_centro", true);
-                        intent.putExtra("id", centro.getId());
-                        intent.putExtra("nombre", centro.getNombre());
-                        intent.putExtra("direccion", centro.getDireccion());
-                        intent.putExtra("num_registro", centro.getNumRegistro());
-                        intent.putExtra("telefono", centro.getTelefono());
-                        intent.putExtra("email", centro.getEmail());
-                        intent.putExtra("tieneWifi", centro.getTieneWifi());
+                        Intent intent = new Intent(context, RegisterResidenteActivity.class);
+                        intent.putExtra("modify_residente", true);
+                        intent.putExtra("id", residente.getId());
+                        intent.putExtra("nombre", residente.getNombre());
+                        intent.putExtra("apellidos", residente.getApellidos());
+                        intent.putExtra("dni", residente.getDni());
+                        intent.putExtra("fechaNac", residente.getFechaNacimiento());
+                        intent.putExtra("sexo", residente.getSexo());
 
                         context.startActivity(intent);
                     })

@@ -38,13 +38,22 @@
             android:name=".ViewCentroActivity"
             android:exported="false" />
         <activity
-            android:name=".ComunicadosActivity"
+            android:name=".CentrosActivity"
             android:exported="false" />
         <activity
             android:name=".ProfesionalesActivity"
             android:exported="false" />
         <activity
-            android:name=".CentrosActivity"
+            android:name=".RegisterProfesionalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResidentesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewResidenteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterResidenteActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

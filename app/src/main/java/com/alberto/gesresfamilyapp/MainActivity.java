@@ -1,6 +1,5 @@
 package com.alberto.gesresfamilyapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btCentros;
     Button btProfesionales;
-    Button btComunicados;
+    Button btResidentes;
 
 
     @Override
@@ -21,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btCentros = findViewById(R.id.btCentros);
+        btProfesionales = findViewById(R.id.btProfesionales);
+        btResidentes = findViewById(R.id.btResidentes);
 
         btCentros.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,6 +30,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CentrosActivity.class));
             }
         });
+
+        btProfesionales.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, ProfesionalesActivity.class));
+            }
+        });
+
+        btResidentes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, ResidentesActivity.class));
+            }
+        });
+
 
 
 

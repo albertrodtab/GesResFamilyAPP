@@ -40,14 +40,13 @@
                 android:id="@+id/textView4"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Dirección:" />
+                android:text="Apellidos:" />
 
             <EditText
                 android:id="@+id/etApellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPostalAddress" />
+                android:ems="10" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +58,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Num Registro:" />
+                android:text="DNI:" />
 
             <EditText
                 android:id="@+id/etDni"
@@ -78,14 +77,14 @@
                 android:id="@+id/textView6"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Teléfono:" />
+                android:text="Fecha Nac.:" />
 
             <EditText
-                android:id="@+id/etFechaNac"
+                android:id="@+id/etResidenteFechaNac"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="none" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,22 +96,16 @@
                 android:id="@+id/textView7"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Email:" />
+                android:text="Sexo:" />
 
             <EditText
                 android:id="@+id/etSexo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="none" />
 
         </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/cbWifi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tiene Wifi" />
 
         <Button
             android:id="@+id/btnSelectPhoto"
@@ -134,11 +127,6 @@
                 android:layout_height="258dp"
                 android:layout_weight="1" />
 
-            <com.mapbox.maps.MapView
-                android:id="@+id/mvCentro"
-                android:layout_width="200dp"
-                android:layout_height="258dp" />
-
 
         </LinearLayout>
 
@@ -152,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="registerCentro"
+                android:onClick="registerResidente"
                 android:text="Registrar" />
 
             <Button

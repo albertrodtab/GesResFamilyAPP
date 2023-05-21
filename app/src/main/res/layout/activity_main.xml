@@ -38,6 +38,36 @@
             android:textStyle="bold"
             app:icon="@mipmap/ic_centro_foreground" />
 
+        <Button
+            android:id="@+id/btResidentes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF9100"
+            android:insetLeft="10dp"
+            android:insetTop="10dp"
+            android:insetRight="10dp"
+            android:insetBottom="10dp"
+            android:text="RESIDENTES"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@mipmap/ic_centro_foreground" />
+
+        <Button
+            android:id="@+id/btProfesionales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00B0FF"
+            android:insetLeft="10dp"
+            android:insetTop="10dp"
+            android:insetRight="10dp"
+            android:insetBottom="10dp"
+            android:text="PROFESIONALES"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@mipmap/ic_centro_foreground" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,12 +78,14 @@
                 android:id="@+id/textView2"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:background="#00E5FF"
                 android:text="Usuario" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#00E5FF"
                 android:ems="10"
                 android:hint="Introduce tu usuario"
                 android:inputType="textPersonName"
@@ -73,12 +105,14 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#00E5FF"
                 android:text="Contraseña" />
 
             <EditText
                 android:id="@+id/editTextTextPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00E5FF"
                 android:ems="10"
                 android:hint="Introduce tu contraseña"
                 android:inputType="textPassword" />

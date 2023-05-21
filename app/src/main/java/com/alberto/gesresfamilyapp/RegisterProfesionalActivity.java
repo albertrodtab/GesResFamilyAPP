@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,34 +20,32 @@ import androidx.core.content.FileProvider;
 import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
-import com.alberto.gesresfamilyapp.domain.Centro;
+import com.alberto.gesresfamilyapp.domain.Profesional;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.mapbox.maps.MapView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class RegisterCentroActivity extends AppCompatActivity {
+public class RegisterProfesionalActivity extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
 
-    private boolean isModifyCentro;
+    private boolean isModifyProfesional;
     private AppDatabase db;
     private EditText etNombre;
-    private EditText etDireccion;
-    private EditText etNumRegistro;
-    private EditText etTelefono;
-    private EditText etMail;
-    private CheckBox cbWifi;
+    private EditText etApellidos;
+    private EditText etDni;
+    private EditText etFechaNac;
+    private EditText etCategoria;
     private ImageView imageView;
-    private MapView mapView;
 
-    private Centro centro;
+    private Profesional profesional;
 
     private ActivityResultLauncher<Intent> photoPickerLauncher;
 
@@ -57,9 +55,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_register_centro);
-        mapView = findViewById(R.id.mvCentro);
-
+        setContentView(R.layout.activity_register_profesional);
 
 
         photoPickerLauncher = registerForActivityResult(
@@ -72,7 +68,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             String photoUriString = selectedPhotoUri.toString();
 
                             // Guardar la URI de la foto en el centro
-                            centro.setPhotoUri(photoUriString);
+                            profesional.setPhotoUri(photoUriString);
 
                             // Cargar y mostrar la foto en el ImageView
                             loadImage(photoUriString);
@@ -82,7 +78,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
-                            centro.setPhotoUri(photoUriString);
+                            profesional.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
                             Snackbar.make(imageView, "Foto capturada", BaseTransientBottomBar.LENGTH_LONG).show();
                         }
@@ -91,42 +87,44 @@ public class RegisterCentroActivity extends AppCompatActivity {
         );
 
         etNombre = findViewById(R.id.etNombre);
-        etDireccion = findViewById(R.id.etApellidos);
-        etNumRegistro = findViewById(R.id.etDni);
-        etTelefono = findViewById(R.id.etFechaNac);
-        etMail = findViewById(R.id.etSexo);
-        cbWifi = findViewById(R.id.cbWifi);
+        etApellidos = findViewById(R.id.etApellidos);
+        etDni = findViewById(R.id.etDni);
+        etFechaNac = findViewById(R.id.etFechaNac);
+        etCategoria = findViewById(R.id.etSexo);
         imageView = findViewById(R.id.ivResidenteReg);
 
         db = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries().build();
 
         Intent intent = getIntent();
-        long centroId = intent.getLongExtra("id", -1);
-        isModifyCentro = intent.getBooleanExtra("modify_centro", false);
+        long profesionalId = intent.getLongExtra("id", -1);
+        isModifyProfesional = intent.getBooleanExtra("modify_profesional", false);
 
-        if (isModifyCentro) {
-            if (centroId != -1) {
-                centro = db.centroDao().getById(centroId);
-                if (centro != null) {
-                    fillData(centro);
-                    loadImage(centro.getPhotoUri());
+        if (isModifyProfesional) {
+            if (profesionalId != -1) {
+                profesional = db.profesionalDao().getById(profesionalId);
+                if (profesional != null) {
+                    fillData(profesional);
+                    loadImage(profesional.getPhotoUri());
                 }
             }
         } else {
-            centro = new Centro();
+            profesional = new Profesional();
 
         }
     }
 
 
-    private void fillData(Centro centro) {
-        etNombre.setText(centro.getNombre());
-        etDireccion.setText(centro.getDireccion());
-        etMail.setText(centro.getEmail());
-        etNumRegistro.setText(centro.getNumRegistro());
-        etTelefono.setText(centro.getTelefono());
-        cbWifi.setChecked(centro.getTieneWifi());
+    private void fillData(Profesional profesional) {
+        etNombre.setText(profesional.getNombre());
+        etApellidos.setText(profesional.getApellidos());
+        etCategoria.setText(profesional.getCategoria());
+        etDni.setText(profesional.getDni());
+        if (profesional.getFechaNacimiento() != null) {
+            etFechaNac.setText(profesional.getFechaNacimiento().toString());
+        } else {
+            etFechaNac.setText(""); // or provide a default value or handle the case when fechaNacimiento is null
+        }
     }
 
     /*//usando la libreria Glide
@@ -190,43 +188,48 @@ public class RegisterCentroActivity extends AppCompatActivity {
         return null;
     }
 
-    public void registerCentro(View view) {
+    public void registerProfesional(View view) {
         String nombre = etNombre.getText().toString();
-        String direccion = etDireccion.getText().toString();
-        String numRegistro = etNumRegistro.getText().toString();
-        String telefono = etTelefono.getText().toString();
-        String mail = etMail.getText().toString();
-        boolean tieneWifi = cbWifi.isChecked();
+        String apellidos = etApellidos.getText().toString();
+        String dni = etDni.getText().toString();
+        Editable editableFechaNac = etFechaNac.getText();
+        String fechaNacString = editableFechaNac.toString();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaNac = null;
+        try {
+            fechaNac = dateFormat.parse(fechaNacString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String categoria = etCategoria.getText().toString();
 
 
 
-        if (isModifyCentro) {
-            centro.setNombre(nombre);
-            centro.setDireccion(direccion);
-            centro.setNumRegistro(numRegistro);
-            centro.setTelefono(telefono);
-            centro.setEmail(mail);
-            centro.setTieneWifi(tieneWifi);
-
-            db.centroDao().update(centro);
-            Toast.makeText(this, "Centro modificado", Toast.LENGTH_LONG).show();
+        if (isModifyProfesional) {
+            profesional.setNombre(nombre);
+            profesional.setApellidos(apellidos);
+            profesional.setDni(dni);
+            profesional.setFechaNacimiento(fechaNac);
+            profesional.setCategoria(categoria);
+            db.profesionalDao().update(profesional);
+            Toast.makeText(this, "Profesional modificado", Toast.LENGTH_LONG).show();
         } else {
-            centro.setNombre(nombre);
-            centro.setDireccion(direccion);
-            centro.setNumRegistro(numRegistro);
-            centro.setTelefono(telefono);
-            centro.setEmail(mail);
-            centro.setTieneWifi(tieneWifi);
-            db.centroDao().insert(centro);
-            Toast.makeText(this, "Centro registrado", Toast.LENGTH_LONG).show();
+            profesional.setNombre(nombre);
+            profesional.setApellidos(apellidos);
+            profesional.setDni(dni);
+            profesional.setFechaNacimiento(fechaNac);
+            profesional.setCategoria(categoria);
+
+            db.profesionalDao().insert(profesional);
+            Toast.makeText(this, "Profesional registrado", Toast.LENGTH_LONG).show();
         }
 
         etNombre.setText("");
-        etDireccion.setText("");
-        etMail.setText("");
-        etNumRegistro.setText("");
-        etTelefono.setText("");
-        cbWifi.setChecked(false);
+        etApellidos.setText("");
+        etCategoria.setText("");
+        etDni.setText("");
+        etFechaNac.setText("");
         etNombre.requestFocus();
     }
 

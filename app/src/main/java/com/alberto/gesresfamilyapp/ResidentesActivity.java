@@ -2,38 +2,38 @@ package com.alberto.gesresfamilyapp;
 
 import static com.alberto.gesresfamilyapp.db.Constants.DATABASE_NAME;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.alberto.gesresfamilyapp.adapter.CentroAdapter;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
+import com.alberto.gesresfamilyapp.adapter.ResidenteAdapter;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
-import com.alberto.gesresfamilyapp.domain.Centro;
+import com.alberto.gesresfamilyapp.domain.Residente;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CentrosActivity extends AppCompatActivity {
+public class ResidentesActivity extends AppCompatActivity {
 
-    public static List<Centro> centroList = new ArrayList<>();
-    private CentroAdapter adapter;
+    public static List<Residente> residentesList = new ArrayList<>();
+    private ResidenteAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_centros);
+        setContentView(R.layout.activity_residentes);
 
-        centroList = new ArrayList<>();
+        residentesList = new ArrayList<>();
 
-        RecyclerView recyclerView = findViewById(R.id.centros_list);
+        RecyclerView recyclerView = findViewById(R.id.residentes_list);
         //esto le dice que tenga un tamaño fijo y que ocupe el máximo espacio asignado
         recyclerView.setHasFixedSize(true);
         //Esto le dice que lo va a gestionar un linear layout manager
@@ -41,7 +41,7 @@ public class CentrosActivity extends AppCompatActivity {
         //así se ciñe al Layout manager
         recyclerView.setLayoutManager(layoutManager);
         //hago mi adapter propio no utilizo el arrayadapter de android
-        adapter = new CentroAdapter(this, centroList);
+        adapter = new ResidenteAdapter(this, residentesList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -51,8 +51,8 @@ public class CentrosActivity extends AppCompatActivity {
 
         final AppDatabase db = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries().build();
-        centroList.clear();
-        centroList.addAll(db.centroDao().getAll());
+        residentesList.clear();
+        residentesList.addAll(db.residenteDao().getAll());
         // con esto la lista siempre estára actualizada cuando vuelva de un segundo plano.
         adapter.notifyDataSetChanged();
     }
@@ -67,7 +67,7 @@ public class CentrosActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.registrar) {
             //Con Intent de digo donde estoy y a donde quiero ir
-            Intent intent = new Intent(this, RegisterCentroActivity.class);
+            Intent intent = new Intent(this, RegisterResidenteActivity.class);
             startActivity(intent);
             return true;
         }

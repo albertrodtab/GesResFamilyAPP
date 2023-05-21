@@ -7,8 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -20,34 +20,33 @@ import androidx.core.content.FileProvider;
 import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
-import com.alberto.gesresfamilyapp.domain.Centro;
+import com.alberto.gesresfamilyapp.domain.Profesional;
+import com.alberto.gesresfamilyapp.domain.Residente;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.mapbox.maps.MapView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class RegisterCentroActivity extends AppCompatActivity {
+public class RegisterResidenteActivity extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
 
-    private boolean isModifyCentro;
+    private boolean isModifyResidente;
     private AppDatabase db;
     private EditText etNombre;
-    private EditText etDireccion;
-    private EditText etNumRegistro;
-    private EditText etTelefono;
-    private EditText etMail;
-    private CheckBox cbWifi;
+    private EditText etApellidos;
+    private EditText etDni;
+    private EditText etFechaNac;
+    private EditText etSexo;
     private ImageView imageView;
-    private MapView mapView;
 
-    private Centro centro;
+    private Residente residente;
 
     private ActivityResultLauncher<Intent> photoPickerLauncher;
 
@@ -57,9 +56,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_register_centro);
-        mapView = findViewById(R.id.mvCentro);
-
+        setContentView(R.layout.activity_register_residente);
 
 
         photoPickerLauncher = registerForActivityResult(
@@ -72,7 +69,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             String photoUriString = selectedPhotoUri.toString();
 
                             // Guardar la URI de la foto en el centro
-                            centro.setPhotoUri(photoUriString);
+                            residente.setPhotoUri(photoUriString);
 
                             // Cargar y mostrar la foto en el ImageView
                             loadImage(photoUriString);
@@ -82,7 +79,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
-                            centro.setPhotoUri(photoUriString);
+                            residente.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
                             Snackbar.make(imageView, "Foto capturada", BaseTransientBottomBar.LENGTH_LONG).show();
                         }
@@ -91,42 +88,44 @@ public class RegisterCentroActivity extends AppCompatActivity {
         );
 
         etNombre = findViewById(R.id.etNombre);
-        etDireccion = findViewById(R.id.etApellidos);
-        etNumRegistro = findViewById(R.id.etDni);
-        etTelefono = findViewById(R.id.etFechaNac);
-        etMail = findViewById(R.id.etSexo);
-        cbWifi = findViewById(R.id.cbWifi);
+        etApellidos = findViewById(R.id.etApellidos);
+        etDni = findViewById(R.id.etDni);
+        etFechaNac = findViewById(R.id.etFechaNac);
+        etSexo = findViewById(R.id.etSexo);
         imageView = findViewById(R.id.ivResidenteReg);
 
         db = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries().build();
 
         Intent intent = getIntent();
-        long centroId = intent.getLongExtra("id", -1);
-        isModifyCentro = intent.getBooleanExtra("modify_centro", false);
+        long residenteId = intent.getLongExtra("id", -1);
+        isModifyResidente = intent.getBooleanExtra("modify_residente", false);
 
-        if (isModifyCentro) {
-            if (centroId != -1) {
-                centro = db.centroDao().getById(centroId);
-                if (centro != null) {
-                    fillData(centro);
-                    loadImage(centro.getPhotoUri());
+        if (isModifyResidente) {
+            if (residenteId != -1) {
+                residente = db.residenteDao().getById(residenteId);
+                if (residente != null) {
+                    fillData(residente);
+                    loadImage(residente.getPhotoUri());
                 }
             }
         } else {
-            centro = new Centro();
+            residente = new Residente();
 
         }
     }
 
 
-    private void fillData(Centro centro) {
-        etNombre.setText(centro.getNombre());
-        etDireccion.setText(centro.getDireccion());
-        etMail.setText(centro.getEmail());
-        etNumRegistro.setText(centro.getNumRegistro());
-        etTelefono.setText(centro.getTelefono());
-        cbWifi.setChecked(centro.getTieneWifi());
+    private void fillData(Residente residente) {
+        etNombre.setText(residente.getNombre());
+        etApellidos.setText(residente.getApellidos());
+        etSexo.setText(residente.getSexo());
+        etDni.setText(residente.getDni());
+        if (residente.getFechaNacimiento() != null) {
+            etFechaNac.setText(residente.getFechaNacimiento().toString());
+        } else {
+            etFechaNac.setText(""); // or provide a default value or handle the case when fechaNacimiento is null
+        }
     }
 
     /*//usando la libreria Glide
@@ -190,43 +189,47 @@ public class RegisterCentroActivity extends AppCompatActivity {
         return null;
     }
 
-    public void registerCentro(View view) {
+    public void registerResidente(View view) {
         String nombre = etNombre.getText().toString();
-        String direccion = etDireccion.getText().toString();
-        String numRegistro = etNumRegistro.getText().toString();
-        String telefono = etTelefono.getText().toString();
-        String mail = etMail.getText().toString();
-        boolean tieneWifi = cbWifi.isChecked();
+        String apellidos = etApellidos.getText().toString();
+        String dni = etDni.getText().toString();
+        Editable editableFechaNac = etFechaNac.getText();
+        String fechaNacString = editableFechaNac.toString();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaNac = null;
+        try {
+            fechaNac = dateFormat.parse(fechaNacString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String sexo = etSexo.getText().toString();
 
 
 
-        if (isModifyCentro) {
-            centro.setNombre(nombre);
-            centro.setDireccion(direccion);
-            centro.setNumRegistro(numRegistro);
-            centro.setTelefono(telefono);
-            centro.setEmail(mail);
-            centro.setTieneWifi(tieneWifi);
-
-            db.centroDao().update(centro);
-            Toast.makeText(this, "Centro modificado", Toast.LENGTH_LONG).show();
+        if (isModifyResidente) {
+            residente.setNombre(nombre);
+            residente.setApellidos(apellidos);
+            residente.setDni(dni);
+            residente.setFechaNacimiento(fechaNac);
+            residente.setSexo(sexo);
+            db.residenteDao().update(residente);
+            Toast.makeText(this, "Residente modificado", Toast.LENGTH_LONG).show();
         } else {
-            centro.setNombre(nombre);
-            centro.setDireccion(direccion);
-            centro.setNumRegistro(numRegistro);
-            centro.setTelefono(telefono);
-            centro.setEmail(mail);
-            centro.setTieneWifi(tieneWifi);
-            db.centroDao().insert(centro);
-            Toast.makeText(this, "Centro registrado", Toast.LENGTH_LONG).show();
+            residente.setNombre(nombre);
+            residente.setApellidos(apellidos);
+            residente.setDni(dni);
+            residente.setFechaNacimiento(fechaNac);
+            residente.setSexo(sexo);
+            db.residenteDao().insert(residente);
+            Toast.makeText(this, "Residente registrado", Toast.LENGTH_LONG).show();
         }
 
         etNombre.setText("");
-        etDireccion.setText("");
-        etMail.setText("");
-        etNumRegistro.setText("");
-        etTelefono.setText("");
-        cbWifi.setChecked(false);
+        etApellidos.setText("");
+        etSexo.setText("");
+        etDni.setText("");
+        etFechaNac.setText("");
         etNombre.requestFocus();
     }
 

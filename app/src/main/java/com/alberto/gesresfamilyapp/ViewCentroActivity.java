@@ -14,10 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.alberto.gesresfamilyapp.adapter.CentroAdapter;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
 import com.google.android.gms.maps.MapView;
@@ -33,6 +31,7 @@ public class ViewCentroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_centro);
 
+
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         if (name == null)
@@ -47,11 +46,21 @@ public class ViewCentroActivity extends AppCompatActivity {
 
     private void fillData(Centro centro) {
         TextView name = findViewById(R.id.tvNombre);
-        TextView direccion = findViewById(R.id.tvDireccion);
-        TextView registro = findViewById(R.id.tvNumRegistro);
-        TextView telefono = findViewById(R.id.tvTelefono);
-        TextView mail = findViewById(R.id.tvEmail);
-        ImageView foto = findViewById(R.id.ivCentro);
+        TextView direccion = findViewById(R.id.tvApellidos);
+        TextView registro = findViewById(R.id.tvDni);
+        TextView telefono = findViewById(R.id.tvProfesionalFechaNac);
+        TextView mail = findViewById(R.id.tvSexo);
+        // Obtener el valor de tieneWifi del objeto centro
+        boolean tieneWifi = centro.getTieneWifi();
+        // Actualizar el estado del TextView tvWifi
+        TextView tvWifi = findViewById(R.id.tvWifi);
+        if (tieneWifi) {
+            tvWifi.setText("Tiene Wi-Fi");
+        } else {
+            tvWifi.setText("No tiene Wi-Fi");
+        }
+
+        ImageView foto = findViewById(R.id.ivProfesional);
         MapView mapa = findViewById(R.id.mvCentro);
 
         name.setText(centro.getNombre());
@@ -59,6 +68,7 @@ public class ViewCentroActivity extends AppCompatActivity {
         registro.setText(centro.getNumRegistro());
         telefono.setText(centro.getTelefono());
         mail.setText(centro.getEmail());
+
 
         // Agrega el OnClickListener al campo de teléfono
         telefono.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +87,9 @@ public class ViewCentroActivity extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+    public void cancel(View view) {
+        onBackPressed();
     }
 
 

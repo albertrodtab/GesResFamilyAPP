@@ -25,6 +25,10 @@ public class Centro {
     private String email;
     @ColumnInfo
     private String telefono;
+
+    @ColumnInfo
+    private boolean tieneWifi;
+
     @ColumnInfo
     private String photoUri;
 
@@ -34,6 +38,7 @@ public class Centro {
         this.numRegistro = numRegistro;
         this.telefono = telefono;
         this.email = email;
+        this.tieneWifi = tieneWifi;
     }
 
     public long getId() {
@@ -91,5 +96,13 @@ public class Centro {
 
     public void setPhotoUri(String photoUri) {
         this.photoUri = photoUri;
+    }
+
+    public boolean getTieneWifi() {
+        return tieneWifi;
+    }
+
+    public void setTieneWifi(boolean tieneWifi) {
+        this.tieneWifi = tieneWifi;
     }
 }

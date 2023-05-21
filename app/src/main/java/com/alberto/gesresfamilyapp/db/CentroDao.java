@@ -22,8 +22,8 @@ public interface CentroDao {
     @Query("DELETE FROM Centro WHERE nombre = :name")
     void deleteByName(String name);
 
-    @Query("UPDATE Centro SET nombre = :nombre, direccion = :direccion, numRegistro = :numRegistro, telefono = :telefono, email = :email WHERE nombre = :nombre ")
-    void update(String nombre, String direccion, String numRegistro, String telefono, String email);
+    @Query("UPDATE Centro SET nombre = :nombre, direccion = :direccion, numRegistro = :numRegistro, telefono = :telefono, email = :email, tieneWifi = :tieneWifi WHERE nombre = :nombre ")
+    void update(String nombre, String direccion, String numRegistro, String telefono, String email, boolean tieneWifi);
 
 
     @Query("SELECT * FROM centro WHERE id = :id")
