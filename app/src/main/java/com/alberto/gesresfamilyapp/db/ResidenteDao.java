@@ -24,8 +24,8 @@ public interface ResidenteDao {
     @Query("DELETE FROM Residente WHERE nombre = :name")
     void deleteByName(String name);
 
-    @Query("UPDATE Residente SET nombre = :nombre, apellidos = :apellidos, dni = :dni, fecha_nacimiento = :fechaNac, sexo = :sexo WHERE nombre = :nombre ")
-    void update(String nombre, String apellidos, String dni, Date fechaNac, String sexo);
+    @Query("UPDATE Residente SET nombre = :nombre, apellidos = :apellidos, dni = :dni, sexo = :sexo WHERE nombre = :nombre ")
+    void update(String nombre, String apellidos, String dni, /*Date fechaNac,*/ String sexo);
 
 
     @Query("SELECT * FROM Residente WHERE id = :id")

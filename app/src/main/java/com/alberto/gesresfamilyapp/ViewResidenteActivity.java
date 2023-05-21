@@ -42,15 +42,15 @@ public class ViewResidenteActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.tvNombre);
         TextView apellidos = findViewById(R.id.tvApellidos);
         TextView dni = findViewById(R.id.tvDni);
-        TextView fechaNac = findViewById(R.id.tvProfesionalFechaNac);
+        //TextView fechaNac = findViewById(R.id.tvProfesionalFechaNac);
         TextView sexo = findViewById(R.id.tvSexo);
-        ImageView foto = findViewById(R.id.ivProfesional);
+        ImageView foto = findViewById(R.id.ivResidente);
 
 
         name.setText(residente.getNombre());
         apellidos.setText(residente.getApellidos());
         dni.setText(residente.getDni());
-        fechaNac.setText((CharSequence) residente.getFechaNacimiento());
+        //fechaNac.setText((CharSequence) residente.getFechaNacimiento());
         sexo.setText(residente.getSexo());
     }
 

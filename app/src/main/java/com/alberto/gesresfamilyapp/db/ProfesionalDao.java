@@ -24,8 +24,8 @@ public interface ProfesionalDao {
     @Query("DELETE FROM Profesional WHERE nombre = :name")
     void deleteByName(String name);
 
-    @Query("UPDATE Profesional SET nombre = :nombre, apellidos = :apellidos, dni = :dni, fecha_nacimiento = :fecha_nacimiento, categoria = :categoria WHERE nombre = :nombre ")
-    void update(String nombre, String apellidos, String dni, Date fecha_nacimiento, String categoria);
+    @Query("UPDATE Profesional SET nombre = :nombre, apellidos = :apellidos, dni = :dni, categoria = :categoria WHERE nombre = :nombre ")
+    void update(String nombre, String apellidos, String dni, /*Date fecha_nacimiento,*/ String categoria);
 
 
     @Query("SELECT * FROM Profesional WHERE id = :id")

@@ -42,7 +42,7 @@ public class ViewProfesionalActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.tvNombre);
         TextView apellidos = findViewById(R.id.tvApellidos);
         TextView dni = findViewById(R.id.tvDni);
-        TextView fechaNac = findViewById(R.id.tvProfesionalFechaNac);
+        //TextView fechaNac = findViewById(R.id.tvProfesionalFechaNac);
         TextView categoria = findViewById(R.id.tvCategoria);
         ImageView foto = findViewById(R.id.ivProfesional);
 
@@ -50,7 +50,7 @@ public class ViewProfesionalActivity extends AppCompatActivity {
         name.setText(profesional.getNombre());
         apellidos.setText(profesional.getApellidos());
         dni.setText(profesional.getDni());
-        fechaNac.setText((CharSequence) profesional.getFechaNacimiento());
+        //fechaNac.setText((CharSequence) profesional.getFechaNacimiento());
         categoria.setText(profesional.getCategoria());
     }
 

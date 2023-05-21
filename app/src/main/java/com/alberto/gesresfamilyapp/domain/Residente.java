@@ -25,9 +25,9 @@ public class Residente {
     private String apellidos;
     @ColumnInfo
     private String dni;
-    @ColumnInfo (name = "fecha_nacimiento")
-    @TypeConverters(Converters.class)
-    private Date fechaNacimiento;
+    //@ColumnInfo (name = "fecha_nacimiento")
+    //@TypeConverters(Converters.class)
+    //private Date fechaNacimiento;
     @ColumnInfo
     private String sexo;
 
@@ -45,12 +45,12 @@ public class Residente {
     public Residente() {
     }
 
-    public Residente(long id, @NonNull String nombre, String apellidos, String dni, Date fechaNacimiento, String sexo) {
+    public Residente(long id, @NonNull String nombre, String apellidos, String dni, String sexo) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
-        this.fechaNacimiento = fechaNacimiento;
+        //this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
     }
 
@@ -87,13 +87,13 @@ public class Residente {
         this.dni = dni;
     }
 
-    public Date getFechaNacimiento() {
+    /*public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
-    }
+    }*/
 
     public String getSexo() {
         return sexo;
