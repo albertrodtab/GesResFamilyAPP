@@ -37,13 +37,13 @@
             android:padding="10dp"
             android:text="DNI" />
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/tvProfesionalFechaNac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:padding="10dp"
-            android:text="Fecha Nacimiento" />
+            android:text="Fecha Nacimiento" />-->
 
         <TextView
             android:id="@+id/tvCategoria"

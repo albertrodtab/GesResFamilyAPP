@@ -29,9 +29,9 @@ public class Profesional {
     @ColumnInfo
     private String dni;
 
-    @ColumnInfo (name = "fecha_nacimiento")
-    @TypeConverters(Converters.class)
-    private Date fechaNacimiento;
+    //ColumnInfo (name = "fecha_nacimiento")
+    //@TypeConverters(Converters.class)
+    //private Date fechaNacimiento;
 
     @ColumnInfo
     private String categoria;
@@ -50,12 +50,12 @@ public class Profesional {
     public Profesional() {
     }
 
-    public Profesional(long id, @NonNull String nombre, String apellidos, String dni, Date fechaNacimiento, String categoria) {
+    public Profesional(long id, @NonNull String nombre, String apellidos, String dni, String categoria) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
-        this.fechaNacimiento = fechaNacimiento;
+        //this.fechaNacimiento = fechaNacimiento;
         this.categoria = categoria;
     }
 
@@ -92,13 +92,13 @@ public class Profesional {
         this.dni = dni;
     }
 
-    public Date getFechaNacimiento() {
+   /* public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
-    }
+    }*/
 
     public String getCategoria() {
         return categoria;

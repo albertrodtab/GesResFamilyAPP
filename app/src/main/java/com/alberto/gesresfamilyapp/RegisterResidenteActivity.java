@@ -42,7 +42,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
     private EditText etNombre;
     private EditText etApellidos;
     private EditText etDni;
-    private EditText etFechaNac;
+    //private EditText etFechaNac;
     private EditText etSexo;
     private ImageView imageView;
 
@@ -90,7 +90,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
         etNombre = findViewById(R.id.etNombre);
         etApellidos = findViewById(R.id.etApellidos);
         etDni = findViewById(R.id.etDni);
-        etFechaNac = findViewById(R.id.etFechaNac);
+        //etFechaNac = findViewById(R.id.etFechaNac);
         etSexo = findViewById(R.id.etSexo);
         imageView = findViewById(R.id.ivResidenteReg);
 
@@ -121,11 +121,11 @@ public class RegisterResidenteActivity extends AppCompatActivity {
         etApellidos.setText(residente.getApellidos());
         etSexo.setText(residente.getSexo());
         etDni.setText(residente.getDni());
-        if (residente.getFechaNacimiento() != null) {
-            etFechaNac.setText(residente.getFechaNacimiento().toString());
-        } else {
-            etFechaNac.setText(""); // or provide a default value or handle the case when fechaNacimiento is null
-        }
+        //if (residente.getFechaNacimiento() != null) {
+        //    etFechaNac.setText(residente.getFechaNacimiento().toString());
+        //} else {
+        //    etFechaNac.setText(""); // or provide a default value or handle the case when fechaNacimiento is null
+        //}
     }
 
     /*//usando la libreria Glide
@@ -193,16 +193,16 @@ public class RegisterResidenteActivity extends AppCompatActivity {
         String nombre = etNombre.getText().toString();
         String apellidos = etApellidos.getText().toString();
         String dni = etDni.getText().toString();
-        Editable editableFechaNac = etFechaNac.getText();
-        String fechaNacString = editableFechaNac.toString();
+        //Editable editableFechaNac = etFechaNac.getText();
+        //String fechaNacString = editableFechaNac.toString();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaNac = null;
-        try {
-            fechaNac = dateFormat.parse(fechaNacString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        //Date fechaNac = null;
+        //try {
+        //    fechaNac = dateFormat.parse(fechaNacString);
+        //} catch (ParseException e) {
+        //    e.printStackTrace();
+        //}
         String sexo = etSexo.getText().toString();
 
 
@@ -211,7 +211,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
             residente.setNombre(nombre);
             residente.setApellidos(apellidos);
             residente.setDni(dni);
-            residente.setFechaNacimiento(fechaNac);
+            //residente.setFechaNacimiento(fechaNac);
             residente.setSexo(sexo);
             db.residenteDao().update(residente);
             Toast.makeText(this, "Residente modificado", Toast.LENGTH_LONG).show();
@@ -219,7 +219,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
             residente.setNombre(nombre);
             residente.setApellidos(apellidos);
             residente.setDni(dni);
-            residente.setFechaNacimiento(fechaNac);
+            //residente.setFechaNacimiento(fechaNac);
             residente.setSexo(sexo);
             db.residenteDao().insert(residente);
             Toast.makeText(this, "Residente registrado", Toast.LENGTH_LONG).show();
@@ -229,7 +229,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
         etApellidos.setText("");
         etSexo.setText("");
         etDni.setText("");
-        etFechaNac.setText("");
+        //etFechaNac.setText("");
         etNombre.requestFocus();
     }
 

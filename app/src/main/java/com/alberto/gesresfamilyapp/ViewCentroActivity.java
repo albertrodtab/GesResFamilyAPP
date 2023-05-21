@@ -46,10 +46,10 @@ public class ViewCentroActivity extends AppCompatActivity {
 
     private void fillData(Centro centro) {
         TextView name = findViewById(R.id.tvNombre);
-        TextView direccion = findViewById(R.id.tvApellidos);
-        TextView registro = findViewById(R.id.tvDni);
-        TextView telefono = findViewById(R.id.tvProfesionalFechaNac);
-        TextView mail = findViewById(R.id.tvSexo);
+        TextView direccion = findViewById(R.id.tvDireccion);
+        TextView registro = findViewById(R.id.tvNumRegistro);
+        TextView telefono = findViewById(R.id.tvTelefono);
+        TextView mail = findViewById(R.id.tvEmail);
         // Obtener el valor de tieneWifi del objeto centro
         boolean tieneWifi = centro.getTieneWifi();
         // Actualizar el estado del TextView tvWifi
@@ -60,7 +60,7 @@ public class ViewCentroActivity extends AppCompatActivity {
             tvWifi.setText("No tiene Wi-Fi");
         }
 
-        ImageView foto = findViewById(R.id.ivProfesional);
+        ImageView foto = findViewById(R.id.ivCentro);
         MapView mapa = findViewById(R.id.mvCentro);
 
         name.setText(centro.getNombre());

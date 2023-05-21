@@ -41,7 +41,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
     private EditText etNombre;
     private EditText etApellidos;
     private EditText etDni;
-    private EditText etFechaNac;
+    //private EditText etFechaNac;
     private EditText etCategoria;
     private ImageView imageView;
 
@@ -89,9 +89,9 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
         etNombre = findViewById(R.id.etNombre);
         etApellidos = findViewById(R.id.etApellidos);
         etDni = findViewById(R.id.etDni);
-        etFechaNac = findViewById(R.id.etFechaNac);
-        etCategoria = findViewById(R.id.etSexo);
-        imageView = findViewById(R.id.ivResidenteReg);
+        //etFechaNac = findViewById(R.id.etFechaNac);
+        etCategoria = findViewById(R.id.etCategoria);
+        imageView = findViewById(R.id.ivProfesionalReg);
 
         db = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries().build();
@@ -120,11 +120,11 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
         etApellidos.setText(profesional.getApellidos());
         etCategoria.setText(profesional.getCategoria());
         etDni.setText(profesional.getDni());
-        if (profesional.getFechaNacimiento() != null) {
-            etFechaNac.setText(profesional.getFechaNacimiento().toString());
-        } else {
-            etFechaNac.setText(""); // or provide a default value or handle the case when fechaNacimiento is null
-        }
+        //if (profesional.getFechaNacimiento() != null) {
+        //    etFechaNac.setText(profesional.getFechaNacimiento().toString());
+        //} else {
+        //    etFechaNac.setText(""); // or provide a default value or handle the case when fechaNacimiento is null
+        //}
     }
 
     /*//usando la libreria Glide
@@ -192,16 +192,16 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
         String nombre = etNombre.getText().toString();
         String apellidos = etApellidos.getText().toString();
         String dni = etDni.getText().toString();
-        Editable editableFechaNac = etFechaNac.getText();
-        String fechaNacString = editableFechaNac.toString();
+        //Editable editableFechaNac = etFechaNac.getText();
+        //String fechaNacString = editableFechaNac.toString();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaNac = null;
-        try {
-            fechaNac = dateFormat.parse(fechaNacString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        //Date fechaNac = null;
+        //try {
+        //    fechaNac = dateFormat.parse(fechaNacString);
+        //} catch (ParseException e) {
+        //    e.printStackTrace();
+        //}
         String categoria = etCategoria.getText().toString();
 
 
@@ -210,7 +210,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
             profesional.setNombre(nombre);
             profesional.setApellidos(apellidos);
             profesional.setDni(dni);
-            profesional.setFechaNacimiento(fechaNac);
+            //profesional.setFechaNacimiento(fechaNac);
             profesional.setCategoria(categoria);
             db.profesionalDao().update(profesional);
             Toast.makeText(this, "Profesional modificado", Toast.LENGTH_LONG).show();
@@ -218,7 +218,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
             profesional.setNombre(nombre);
             profesional.setApellidos(apellidos);
             profesional.setDni(dni);
-            profesional.setFechaNacimiento(fechaNac);
+            //profesional.setFechaNacimiento(fechaNac);
             profesional.setCategoria(categoria);
 
             db.profesionalDao().insert(profesional);
@@ -229,7 +229,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
         etApellidos.setText("");
         etCategoria.setText("");
         etDni.setText("");
-        etFechaNac.setText("");
+        //etFechaNac.setText("");
         etNombre.requestFocus();
     }
 

@@ -91,12 +91,12 @@ public class RegisterCentroActivity extends AppCompatActivity {
         );
 
         etNombre = findViewById(R.id.etNombre);
-        etDireccion = findViewById(R.id.etApellidos);
-        etNumRegistro = findViewById(R.id.etDni);
-        etTelefono = findViewById(R.id.etFechaNac);
-        etMail = findViewById(R.id.etSexo);
+        etDireccion = findViewById(R.id.etDireccion);
+        etNumRegistro = findViewById(R.id.etNumRegistro);
+        etTelefono = findViewById(R.id.etTelefono);
+        etMail = findViewById(R.id.etEmail);
         cbWifi = findViewById(R.id.cbWifi);
-        imageView = findViewById(R.id.ivResidenteReg);
+        imageView = findViewById(R.id.ivCentroReg);
 
         db = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries().build();

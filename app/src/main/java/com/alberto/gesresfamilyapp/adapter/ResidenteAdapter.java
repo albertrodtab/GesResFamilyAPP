@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.R;
+import com.alberto.gesresfamilyapp.RegisterProfesionalActivity;
 import com.alberto.gesresfamilyapp.RegisterResidenteActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
+import com.alberto.gesresfamilyapp.domain.Profesional;
 import com.alberto.gesresfamilyapp.domain.Residente;
 import com.bumptech.glide.Glide;
 
-import java.util.Date;
 import java.util.List;
 
 public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.ResidenteHolder>{
@@ -39,7 +40,8 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
         selectedPosition = -1;
     }
 
-    //Patron Holder (ESTO ESTOY OBLIGADO A HACERLO SIEMPRE)
+    //Patron Holder (ESTO
+    // ESTOY OBLIGADO A HACERLO SIEMPRE)
     //metodo que crea cada estructura de layout donde iran los datos de cada cnetro.
     @Override
     public ResidenteHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -54,14 +56,13 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
         holder.residenteNombre.setText(residenteList.get(position).getNombre());
         holder.residenteApellidos.setText(residenteList.get(position).getApellidos());
         holder.residenteDni.setText(residenteList.get(position).getDni());
-        Date fechaNacimiento = residenteList.get(position).getFechaNacimiento();
-        String fechaNacimientoString = "";
-        if (fechaNacimiento != null) {
-            fechaNacimientoString = fechaNacimiento.toString(); // Convertir Date a String
-        }
-        holder.residenteFechaNac.setText(fechaNacimientoString);
+        //Date fechaNacimiento = profesionalList.get(position).getFechaNacimiento();
+        //String fechaNacimientoString = "";
+        //if (fechaNacimiento != null) {
+        //    fechaNacimientoString = fechaNacimiento.toString(); // Convertir Date a String
+        //}
+        //holder.profesionalFechaNac.setText(fechaNacimientoString);
         holder.residenteSexo.setText(residenteList.get(position).getSexo());
-
 
         Residente residente = residenteList.get(position);
 
@@ -88,10 +89,11 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
     public class ResidenteHolder extends RecyclerView.ViewHolder{
         public TextView residenteNombre;
         public TextView residenteApellidos;
-        public TextView residenteSexo;
         public TextView residenteDni;
-        public TextView residenteFechaNac;
+        public TextView residenteSexo;
+        //public TextView profesionalFechaNac;
         public ImageView residenteImagen;
+
         //public CheckBox taskDone;
         //public Button doTaskButton;
         //public Button seeDetailsButton;
@@ -106,9 +108,10 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
             residenteNombre = view.findViewById(R.id.tvNombre);
             residenteApellidos = view.findViewById(R.id.tvApellidos);
             residenteDni = view.findViewById(R.id.tvDni);
-            residenteFechaNac = view.findViewById(R.id.tvResidenteFechaNac);
+            //profesionalFechaNac = view.findViewById(R.id.tvProfesionalFechaNac);
             residenteSexo = view.findViewById(R.id.tvSexo);
-            residenteImagen = view.findViewById(R.id.ivResidenteReg);
+            residenteImagen = view.findViewById(R.id.ivResidente);
+
 
             btDelete = view.findViewById(R.id.btDelete);
 
@@ -155,8 +158,8 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
 
         private void deleteResidente(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el residente")
-                    .setTitle("Borrar Residente")
+            builder.setMessage("Estas seguro de Borrar el Residente")
+                    .setTitle("Confirmar Borrado")
                     .setPositiveButton("Si", (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
@@ -173,7 +176,7 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
 
         private void modifyResidente(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el Residente?")
+            builder.setMessage("¿Deseas modificar el residente?")
                     .setTitle("Confirmar Modificación")
                     .setPositiveButton("Sí", (dialog, id) -> {
                         Residente residente = residenteList.get(position);
@@ -184,7 +187,7 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
                         intent.putExtra("nombre", residente.getNombre());
                         intent.putExtra("apellidos", residente.getApellidos());
                         intent.putExtra("dni", residente.getDni());
-                        intent.putExtra("fechaNac", residente.getFechaNacimiento());
+                        //intent.putExtra("fechaNac", profesional.getFechaNacimiento());
                         intent.putExtra("sexo", residente.getSexo());
 
                         context.startActivity(intent);

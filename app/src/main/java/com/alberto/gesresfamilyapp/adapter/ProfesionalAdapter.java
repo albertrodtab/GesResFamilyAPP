@@ -55,12 +55,12 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
         holder.profesionalNombre.setText(profesionalList.get(position).getNombre());
         holder.profesionalApellidos.setText(profesionalList.get(position).getApellidos());
         holder.profesionalDni.setText(profesionalList.get(position).getDni());
-        Date fechaNacimiento = profesionalList.get(position).getFechaNacimiento();
-        String fechaNacimientoString = "";
-        if (fechaNacimiento != null) {
-            fechaNacimientoString = fechaNacimiento.toString(); // Convertir Date a String
-        }
-        holder.profesionalFechaNac.setText(fechaNacimientoString);
+        //Date fechaNacimiento = profesionalList.get(position).getFechaNacimiento();
+        //String fechaNacimientoString = "";
+        //if (fechaNacimiento != null) {
+        //    fechaNacimientoString = fechaNacimiento.toString(); // Convertir Date a String
+        //}
+        //holder.profesionalFechaNac.setText(fechaNacimientoString);
         holder.profesionalCategoria.setText(profesionalList.get(position).getCategoria());
 
         Profesional profesional = profesionalList.get(position);
@@ -90,7 +90,7 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
         public TextView profesionalApellidos;
         public TextView profesionalDni;
         public TextView profesionalCategoria;
-        public TextView profesionalFechaNac;
+        //public TextView profesionalFechaNac;
         public ImageView profesionalImagen;
 
         //public CheckBox taskDone;
@@ -107,7 +107,7 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
             profesionalNombre = view.findViewById(R.id.tvNombre);
             profesionalApellidos = view.findViewById(R.id.tvApellidos);
             profesionalDni = view.findViewById(R.id.tvDni);
-            profesionalFechaNac = view.findViewById(R.id.tvProfesionalFechaNac);
+            //profesionalFechaNac = view.findViewById(R.id.tvProfesionalFechaNac);
             profesionalCategoria = view.findViewById(R.id.tvCategoria);
             profesionalImagen = view.findViewById(R.id.ivProfesional);
 
@@ -186,7 +186,7 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
                         intent.putExtra("nombre", profesional.getNombre());
                         intent.putExtra("apellidos", profesional.getApellidos());
                         intent.putExtra("dni", profesional.getDni());
-                        intent.putExtra("fechaNac", profesional.getFechaNacimiento());
+                        //intent.putExtra("fechaNac", profesional.getFechaNacimiento());
                         intent.putExtra("categoria", profesional.getCategoria());
 
                         context.startActivity(intent);
