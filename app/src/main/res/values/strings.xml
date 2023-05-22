@@ -2,12 +2,11 @@
 <resources>
     <string name="app_name">GesResFamilyApp</string>
     <string name="btRegresar">Regresar</string>
-    <string name="btCentros">Centros</string>
-    <string name="btResidentes">Residentes</string>
-    <string name="btProfesionales">Profesionales</string>
+    <string name="btResidentes">RESIDENTES</string>
+    <string name="btProfesionales">PROFESIONALES</string>
     <string name="tvUsuario">Usuario</string>
     <string name="tvContraseña">Contraseña</string>
-    <string name="btLogin">Login</string>
+    <string name="btLogin">Entrar</string>
     <string name="btRegistrarse">Registrarse</string>
     <string name="tvNombre">Nombre</string>
     <string name="tvDireccion">Direccion</string>
@@ -46,4 +45,6 @@
     <string name="centroRegistado">Centro Registrado</string>
     <string name="residenteRegistado">Residente Registrado</string>
     <string name="profesionalRegistado">Profesional Registrado</string>
+    <string name="btCentros">CENTROS</string>
+    <string name="IndicaLaPosicionDelCentroEnElMapa">Indica la posición del Centro en el mapa</string>
 </resources>

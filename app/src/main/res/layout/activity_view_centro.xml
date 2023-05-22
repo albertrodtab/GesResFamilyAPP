@@ -70,11 +70,13 @@
                 android:layout_height="258dp"
                 android:layout_weight="1" />
 
-            <com.google.android.gms.maps.MapView
+            <com.mapbox.maps.MapView
                 android:id="@+id/mvCentro"
-                android:layout_width="56dp"
+                android:layout_width="200dp"
                 android:layout_height="258dp"
-                android:layout_weight="1" />
+                app:cameraTargetLat="42.659548"
+                app:cameraTargetLng="-8.110613"
+                app:cameraZoom="10.0"/>
 
         </LinearLayout>
 
@@ -98,17 +100,43 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <Button
+                <!--<Button
                     android:id="@+id/btMod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/btModificar" />
+                    android:text="@string/btModificar" />-->
 
-                <Button
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btMod"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btModificar"
+                    app:cornerRadius="20dp"
+
+                    app:iconGravity="textStart"
+                    app:iconSize="24dp" />
+
+                <!--<Button
                     android:id="@+id/btDelete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/btDelete" />
+                    android:text="@string/btDelete" />-->
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btDelete"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btDelete"
+                    app:cornerRadius="20dp"
+
+                    app:iconGravity="textStart"
+                    app:iconSize="24dp" />
+
+<!--                app:icon="@drawable/ic_modify"-->
             </LinearLayout>
 
         </LinearLayout>
