@@ -1,5 +1,7 @@
 package com.alberto.gesresfamilyapp.adapter;
 
+import static android.provider.Settings.Global.getString;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -58,7 +60,7 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         holder.centroRegistro.setText(centroList.get(position).getNumRegistro());
         holder.centroTelefono.setText(centroList.get(position).getTelefono());
         boolean tieneWifi = centroList.get(position).getTieneWifi();
-        String wifiStatus = tieneWifi ? "Tiene Wi-Fi" : "No tiene Wi-Fi";
+        String wifiStatus = tieneWifi ? "Tiene Wifi" : "No tiene Wifi";
         holder.centroWifi.setText(wifiStatus);
 
 
@@ -158,9 +160,9 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
         private void deleteCentro(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el centro")
-                    .setTitle("Borar Centro")
-                    .setPositiveButton("Si", (dialog, id) -> {
+            builder.setMessage(R.string.estasSeguroDeBorrarElCentro)
+                    .setTitle(R.string.borrarCentro)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
                         Centro centro = centroList.get(position);
@@ -169,16 +171,16 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
                         centroList.remove(position);
                         notifyItemRemoved(position);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
 
         private void modifyCentro(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el centro?")
-                    .setTitle("Confirmar Modificación")
-                    .setPositiveButton("Sí", (dialog, id) -> {
+            builder.setMessage(R.string.deseasModificarElCentro)
+                    .setTitle(R.string.confirmarModificación)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         Centro centro = centroList.get(position);
 
                         Intent intent = new Intent(context, RegisterCentroActivity.class);
@@ -193,7 +195,7 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
                         context.startActivity(intent);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
             dialog.show();

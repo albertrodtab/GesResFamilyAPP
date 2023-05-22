@@ -157,9 +157,9 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
 
         private void deleteProfesional(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el Profesional")
-                    .setTitle("Confirmar Borrado")
-                    .setPositiveButton("Si", (dialog, id) -> {
+            builder.setMessage(R.string.estasSeguroDeBorrarElProfesional)
+                    .setTitle(R.string.ConfirmarBorrado)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
                         Profesional profesional = profesionalList.get(position);
@@ -168,16 +168,16 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
                         profesionalList.remove(position);
                         notifyItemRemoved(position);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
 
         private void modifyProfesional(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el profesional?")
-                    .setTitle("Confirmar Modificación")
-                    .setPositiveButton("Sí", (dialog, id) -> {
+            builder.setMessage(R.string.deseasModificarElProfesional)
+                    .setTitle(R.string.confirmarModificación)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         Profesional profesional = profesionalList.get(position);
 
                         Intent intent = new Intent(context, RegisterProfesionalActivity.class);
@@ -191,7 +191,7 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
 
                         context.startActivity(intent);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
             dialog.show();
