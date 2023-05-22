@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewCentroActivity">
+    tools:context=".ViewResidenteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
                 android:id="@+id/textView"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Nombre:" />
+                android:text="@string/tvNombre" />
 
             <EditText
                 android:id="@+id/etNombre"
@@ -40,7 +40,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Apellidos:" />
+                android:text="@string/tvApellidos" />
 
             <EditText
                 android:id="@+id/etApellidos"
@@ -58,7 +58,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="DNI:" />
+                android:text="@string/tvDni" />
 
             <EditText
                 android:id="@+id/etDni"
@@ -96,7 +96,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Sexo:" />
+                android:text="@string/tvSexo" />
 
             <EditText
                 android:id="@+id/etSexo"
@@ -114,7 +114,7 @@
             android:layout_gravity="center"
             android:gravity="center_horizontal|center_vertical"
             android:onClick="selectPhoto"
-            android:text="Seleccionar Foto" />
+            android:text="@string/btSelectPhoto" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="registerResidente"
-                android:text="Registrar" />
+                android:text="@string/btregister" />
 
             <Button
                 android:id="@+id/cancel"
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="cancel"
-                android:text="Cancelar" />
+                android:text="@string/btcancel" />
 
         </LinearLayout>
 

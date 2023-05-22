@@ -21,21 +21,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Nombre" />
+            android:text="@string/tvNombre" />
 
         <TextView
             android:id="@+id/tvDireccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Dirección" />
+            android:text="@string/tvDireccion" />
 
         <TextView
             android:id="@+id/tvNumRegistro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Num Registro" />
+            android:text="@string/tvNumRegistro" />
 
         <TextView
             android:id="@+id/tvTelefono"
@@ -43,21 +43,21 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:padding="10dp"
-            android:text="Teléfono" />
+            android:text="@string/tvTelefono" />
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="email" />
+            android:text="@string/tvEmail" />
 
         <TextView
             android:id="@+id/tvWifi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Wifi" />
+            android:text="@string/cbWifi" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,13 +102,13 @@
                     android:id="@+id/btMod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="MODIFICAR" />
+                    android:text="@string/btModificar" />
 
                 <Button
                     android:id="@+id/btDelete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Eliminar" />
+                    android:text="@string/btDelete" />
             </LinearLayout>
 
         </LinearLayout>

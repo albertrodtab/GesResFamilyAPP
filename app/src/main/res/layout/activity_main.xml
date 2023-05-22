@@ -32,7 +32,7 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="CENTROS"
+            android:text="@string/btCentros"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -47,7 +47,7 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="RESIDENTES"
+            android:text="@string/btResidentes"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -62,7 +62,7 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="PROFESIONALES"
+            android:text="@string/btProfesionales"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -79,7 +79,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="#00E5FF"
-                android:text="Usuario" />
+                android:text="@string/tvUsuario" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName"
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#00E5FF"
-                android:text="Contraseña" />
+                android:text="@string/tvContraseña" />
 
             <EditText
                 android:id="@+id/editTextTextPassword"
@@ -129,14 +129,14 @@
                 android:id="@+id/button"
                 android:layout_width="172dp"
                 android:layout_height="wrap_content"
-                android:text="Login" />
+                android:text="@string/btLogin"/>
 
             <Button
                 android:id="@+id/btRegistrarse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Registrarse" />
+                android:text="@string/btRegistrarse" />
         </LinearLayout>
 
     </LinearLayout>

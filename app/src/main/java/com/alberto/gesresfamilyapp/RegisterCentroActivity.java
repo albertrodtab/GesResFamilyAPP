@@ -35,6 +35,7 @@ import java.util.Locale;
 public class RegisterCentroActivity extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private boolean isModifyCentro;
     private AppDatabase db;
@@ -77,14 +78,14 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             // Cargar y mostrar la foto en el ImageView
                             loadImage(photoUriString);
 
-                            Snackbar.make(imageView, "Foto seleccionada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoSeleccionada, BaseTransientBottomBar.LENGTH_LONG).show();
                         } else {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
                             centro.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
-                            Snackbar.make(imageView, "Foto capturada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoCapturada, BaseTransientBottomBar.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -209,7 +210,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setTieneWifi(tieneWifi);
 
             db.centroDao().update(centro);
-            Toast.makeText(this, "Centro modificado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.centroModificado, Toast.LENGTH_LONG).show();
         } else {
             centro.setNombre(nombre);
             centro.setDireccion(direccion);
@@ -218,7 +219,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setEmail(mail);
             centro.setTieneWifi(tieneWifi);
             db.centroDao().insert(centro);
-            Toast.makeText(this, "Centro registrado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.centroRegistado, Toast.LENGTH_LONG).show();
         }
 
         etNombre.setText("");

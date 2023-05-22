@@ -158,9 +158,9 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
 
         private void deleteResidente(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el Residente")
-                    .setTitle("Confirmar Borrado")
-                    .setPositiveButton("Si", (dialog, id) -> {
+            builder.setMessage(R.string.estasSeguroDeBorrarElResidente)
+                    .setTitle(R.string.ConfirmarBorrado)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
                         Residente residente = residenteList.get(position);
@@ -169,16 +169,16 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
                         residenteList.remove(position);
                         notifyItemRemoved(position);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
 
         private void modifyResidente(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el residente?")
-                    .setTitle("Confirmar Modificación")
-                    .setPositiveButton("Sí", (dialog, id) -> {
+            builder.setMessage(R.string.deseasModificarElResidente)
+                    .setTitle(R.string.confirmarModificación)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         Residente residente = residenteList.get(position);
 
                         Intent intent = new Intent(context, RegisterResidenteActivity.class);
@@ -192,7 +192,7 @@ public class ResidenteAdapter extends RecyclerView.Adapter<ResidenteAdapter.Resi
 
                         context.startActivity(intent);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
             dialog.show();
