@@ -30,6 +30,11 @@ public class Centro {
     private boolean tieneWifi;
 
     @ColumnInfo
+    private double latitude; //para poder ubicar en el mapa
+    @ColumnInfo
+    private double longitude; //para poder ubicar en el mapa
+
+    @ColumnInfo
     private String photoUri;
 
     public Centro() {
@@ -39,6 +44,8 @@ public class Centro {
         this.telefono = telefono;
         this.email = email;
         this.tieneWifi = tieneWifi;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public long getId() {
@@ -104,5 +111,21 @@ public class Centro {
 
     public void setTieneWifi(boolean tieneWifi) {
         this.tieneWifi = tieneWifi;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

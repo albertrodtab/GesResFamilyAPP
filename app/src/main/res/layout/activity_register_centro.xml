@@ -137,7 +137,10 @@
             <com.mapbox.maps.MapView
                 android:id="@+id/mvCentro"
                 android:layout_width="200dp"
-                android:layout_height="258dp" />
+                android:layout_height="258dp"
+                app:cameraTargetLat="42.659548"
+                app:cameraTargetLng="-8.110613"
+                app:cameraZoom="10.0"/>
 
 
         </LinearLayout>

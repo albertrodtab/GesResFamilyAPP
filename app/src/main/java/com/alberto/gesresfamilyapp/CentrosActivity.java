@@ -70,6 +70,10 @@ public class CentrosActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterCentroActivity.class);
             startActivity(intent);
             return true;
+        } if (item.getItemId() == R.id.view_map) { //Para cuando pulsan en la boton del mapa en el actionbar
+            Intent intent = new Intent(this, MapsActivity.class); //donde nos manda al pinchar sobre el boton mapas en el action bar
+            startActivity(intent);
+            return true;
         }
         return false;
     }

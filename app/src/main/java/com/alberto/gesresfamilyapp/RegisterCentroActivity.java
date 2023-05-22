@@ -3,6 +3,7 @@ package com.alberto.gesresfamilyapp;
 import static com.alberto.gesresfamilyapp.db.Constants.DATABASE_NAME;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +24,18 @@ import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
+import com.mapbox.maps.plugin.annotation.AnnotationConfig;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+import com.mapbox.maps.plugin.gestures.GesturesPlugin;
+import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -52,6 +64,9 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> photoPickerLauncher;
 
+    private Point point; //Guardamos el point para gestionar la latitud y longuitud
+    private PointAnnotationManager pointAnnotationManager; //Para anotar el point así es común para todos
+
 
 
     @Override
@@ -60,6 +75,22 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register_centro);
         mapView = findViewById(R.id.mvCentro);
+
+        // Define las coordenadas por defecto
+        double defaultLatitude = -8.105759; // Latitud por defecto
+        double defaultLongitude = 42.644695; // Longitud por defecto
+
+        setCameraPosition(Point.fromLngLat(defaultLatitude, defaultLongitude)); //Fijamos la camara del mapa en el ultimo centro
+
+        GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
+        gesturesPlugin.addOnMapClickListener(point -> { //Cuando hacemos click en el mapa devolvemos un point
+            removeAllMarkers(); //Método creado para borrar los anteriores antes de seleccionar alguna para no tener problemas con los point
+            this.point = point; //Ese point lo guardamos para tener la longuitud y latitude
+            addMarker(point);
+            return true;
+        });
+
+        initializePointManager();// Para que se cree nada más arrancar
 
 
 
@@ -120,6 +151,16 @@ public class RegisterCentroActivity extends AppCompatActivity {
         }
     }
 
+    private void setCameraPosition(Point point) {
+        CameraOptions cameraPosition = new CameraOptions.Builder()
+                .center(point)
+                .pitch(0.0)
+                .zoom(6.2)
+                .bearing(-17.6)
+                .build();
+
+        mapView.getMapboxMap().setCamera(cameraPosition);
+    }
 
     private void fillData(Centro centro) {
         etNombre.setText(centro.getNombre());
@@ -199,6 +240,13 @@ public class RegisterCentroActivity extends AppCompatActivity {
         String mail = etMail.getText().toString();
         boolean tieneWifi = cbWifi.isChecked();
 
+        //If por si acaso el point no está creado, el usuario no ha selecionado nada en el mapa, asi no da error al crear la tarea porque falte latitude y longuitude
+        if (point == null) {
+            Toast.makeText(this, R.string.IndicaLaPosicionDelCentroEnElMapa, Toast.LENGTH_LONG).show();
+//            Snackbar.make(etName, R.string.select_location_message, BaseTransientBottomBar.LENGTH_LONG); //etName porque el Snackbar hay que asociarlo algún componente del layout
+            return;
+        }
+
 
 
         if (isModifyCentro) {
@@ -208,6 +256,8 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setTelefono(telefono);
             centro.setEmail(mail);
             centro.setTieneWifi(tieneWifi);
+            centro.setLatitude(point.latitude());
+            centro.setLongitude(point.longitude());
 
             db.centroDao().update(centro);
             Toast.makeText(this, R.string.centroModificado, Toast.LENGTH_LONG).show();
@@ -218,6 +268,9 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setTelefono(telefono);
             centro.setEmail(mail);
             centro.setTieneWifi(tieneWifi);
+            centro.setLatitude(point.latitude());
+            centro.setLongitude(point.longitude());
+
             db.centroDao().insert(centro);
             Toast.makeText(this, R.string.centroRegistado, Toast.LENGTH_LONG).show();
         }
@@ -229,6 +282,34 @@ public class RegisterCentroActivity extends AppCompatActivity {
         etTelefono.setText("");
         cbWifi.setChecked(false);
         etNombre.requestFocus();
+    }
+
+    /**
+     * Para inicializar el Pointmanager y asi la podemos dejar inicializada nada más arracar en onCreate
+     */
+    private void initializePointManager() {
+        AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
+        AnnotationConfig annotationConfig = new AnnotationConfig();
+        pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, annotationConfig);
+    }
+
+    /**
+     * Método para añadir un Marker sobre un mapa
+     * @param point le pasamos el point con los datos de latitude y longuitude
+     * @param "String" le podemos pasar un titulo para que aparezca en el mapa min 54 webinar 4 de hay se puede sacar
+     */
+    private void addMarker(Point point) {
+        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
+                .withPoint(point)
+                .withIconImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_centro_foreground)); //le pasamos el dibujo que queremos que pinte como icono, los podemos crea webinar 4 min 54
+        pointAnnotationManager.create(pointAnnotationOptions);
+    }
+
+    /**
+     * Para borrar el marker anterior y no aparezcan todos en el mapa
+     */
+    private void removeAllMarkers() {
+        pointAnnotationManager.deleteAll(); // Se Podria borra uno en concreto pasandole el point exacto
     }
 
 

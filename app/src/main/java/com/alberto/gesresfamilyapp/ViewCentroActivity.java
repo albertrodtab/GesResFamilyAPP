@@ -25,11 +25,14 @@ import java.util.List;
 public class ViewCentroActivity extends AppCompatActivity {
 
     public List<Centro> centros;
+    private MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_centro);
+        //mapView = findViewById(R.id.mvCentro);
+
 
 
         Intent intent = getIntent();

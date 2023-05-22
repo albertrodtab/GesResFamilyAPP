@@ -1,6 +1,6 @@
 package com.alberto.gesresfamilyapp.adapter;
 
-import static android.provider.Settings.Global.getString;
+
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -21,7 +21,8 @@ import com.alberto.gesresfamilyapp.RegisterCentroActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     private Context context;
 
     private int selectedPosition;
+
+    private PointAnnotationManager pointAnnotationManager;
 
     public CentroAdapter(Context context, List<Centro> dataList) {
         this.context = context;
@@ -102,6 +105,7 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         public View parentView;
         public Button btMod;
 
+
         public CentroHolder(View view) {
             super(view);
             parentView = view;
@@ -113,7 +117,8 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
             centroMail = view.findViewById(R.id.tvEmail);
             centroWifi = view.findViewById(R.id.tvWifi);
             centroImagen = view.findViewById(R.id.ivCentro);
-            centroMap = view.findViewById(R.id.mvCentro);
+            //centroMap = view.findViewById(R.id.mvCentro);
+
 
             btDelete = view.findViewById(R.id.btDelete);
 
@@ -135,6 +140,8 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
             btMod.setOnClickListener(v-> modifyCentro(getAdapterPosition()));
         }
+
+
 
 /*        private void doTask(int position){
             Car car = carList.get(position);
