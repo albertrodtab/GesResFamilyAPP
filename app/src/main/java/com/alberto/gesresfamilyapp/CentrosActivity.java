@@ -13,10 +13,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toolbar;
 
 import com.alberto.gesresfamilyapp.adapter.CentroAdapter;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.google.android.material.appbar.MaterialToolbar;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,18 @@ public class CentrosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_centros);
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
 
         centroList = new ArrayList<>();
 
@@ -59,7 +74,7 @@ public class CentrosActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar_main, menu);
+        getMenuInflater().inflate(R.menu.menu_options, menu);
         return true;
     }
 
@@ -70,8 +85,12 @@ public class CentrosActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterCentroActivity.class);
             startActivity(intent);
             return true;
+        } else if (item.getItemId() == R.id.view_map) { //Para cuando pulsan en la boton del mapa en el menu options
+            Intent intent = new Intent(this, MapsActivity.class); //donde nos manda al pinchar sobre el boton mapas en el menu options
+            startActivity(intent);
+            return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item); // Llamar al método de la superclase
     }
 
     public void cancel(View view) {

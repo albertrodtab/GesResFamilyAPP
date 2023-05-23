@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -18,18 +19,32 @@ import android.widget.TextView;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
-import com.google.android.gms.maps.MapView;
+import com.google.android.material.textfield.TextInputLayout;
+import com.mapbox.geojson.Point;
+import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.MapView;
+import com.mapbox.maps.MapboxMap;
+import com.mapbox.maps.plugin.annotation.AnnotationConfig;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
 
 import java.util.List;
 
 public class ViewCentroActivity extends AppCompatActivity {
 
     public List<Centro> centros;
+    private MapView mapView;
+    private PointAnnotationManager pointAnnotationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_centro);
+        //mapView = findViewById(R.id.mvCentro);
+        initializePointManager();
 
 
         Intent intent = getIntent();
@@ -42,14 +57,63 @@ public class ViewCentroActivity extends AppCompatActivity {
                 .allowMainThreadQueries().build();
         Centro centro = db.centroDao().getByName(name);
         fillData(centro);
+
     }
 
+    private void addCenterToMap(Centro centro) {
+
+        Point point = Point.fromLngLat(centro.getLongitude(), centro.getLatitude());
+        addMarker(point, centro.getNombre()); //le pasamos el metodo que crea el marker y ponemos el point y nombre del centro       }
+        setCameraPosition(Point.fromLngLat(centro.getLongitude(), centro.getLatitude())); //Fijamos la camara del mapa en el ultimo centro
+
+    }
+
+    /**
+     * Inicializamos el pointmanager
+     */
+    private void initializePointManager() {
+        AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
+        AnnotationConfig annotationConfig = new AnnotationConfig();
+        pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, annotationConfig);
+
+    }
+
+    /**
+     * Para poder crear un marker y que lo pinte por cada centro
+     *
+     * @param point  Pasamos el point
+     * @param nombre el nombre del centro
+     */
+    private void addMarker(Point point, String nombre) {
+        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
+                .withPoint(point)
+                .withTextField(nombre) //asi aparece el nombre en el mapa
+                .withIconImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_centro_foreground));
+        pointAnnotationManager.create(pointAnnotationOptions);
+    }
+
+    /**
+     * Fija la camara del mapa donde nosotros queramos, asi el mapa arranca desde ese punto
+     *
+     *
+     */
+    private void setCameraPosition(Point point) {
+        CameraOptions cameraPosition = new CameraOptions.Builder()
+                .center(point)
+                .pitch(0.0)
+                .zoom(13.5)
+                .bearing(-17.6)
+                .build();
+        mapView.getMapboxMap().setCamera(cameraPosition);
+
+    }
     private void fillData(Centro centro) {
-        TextView name = findViewById(R.id.tvNombre);
-        TextView direccion = findViewById(R.id.tvDireccion);
-        TextView registro = findViewById(R.id.tvNumRegistro);
-        TextView telefono = findViewById(R.id.tvTelefono);
-        TextView mail = findViewById(R.id.tvEmail);
+
+        TextInputLayout name = findViewById(R.id.tilNombre);
+        TextInputLayout direccion = findViewById(R.id.tilDireccion);
+        TextInputLayout registro = findViewById(R.id.tilNumRegistro);
+        TextInputLayout telefono = findViewById(R.id.tilTelefono);
+        TextInputLayout mail = findViewById(R.id.tilEmail);
         // Obtener el valor de tieneWifi del objeto centro
         boolean tieneWifi = centro.getTieneWifi();
         // Actualizar el estado del TextView tvWifi
@@ -61,25 +125,26 @@ public class ViewCentroActivity extends AppCompatActivity {
         }
 
         ImageView foto = findViewById(R.id.ivCentro);
-        MapView mapa = findViewById(R.id.mvCentro);
 
-        name.setText(centro.getNombre());
-        direccion.setText(centro.getDireccion());
-        registro.setText(centro.getNumRegistro());
-        telefono.setText(centro.getTelefono());
-        mail.setText(centro.getEmail());
-
+        name.getEditText().setText(centro.getNombre());
+        direccion.getEditText().setText(centro.getDireccion());
+        registro.getEditText().setText(centro.getNumRegistro());
+        telefono.getEditText().setText(centro.getTelefono());
+        mail.getEditText().setText(centro.getEmail());
+        addCenterToMap(centro);
 
         // Agrega el OnClickListener al campo de teléfono
         telefono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phoneNumber = telefono.getText().toString();
+                String phoneNumber = telefono.getEditText().getText().toString();
                 dialPhoneNumber(phoneNumber);
             }
         });
 
     }
+
+
 
     private void dialPhoneNumber(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_DIAL);

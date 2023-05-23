@@ -3,6 +3,7 @@ package com.alberto.gesresfamilyapp;
 import static com.alberto.gesresfamilyapp.db.Constants.DATABASE_NAME;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,9 +22,23 @@ import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
+import com.mapbox.maps.plugin.annotation.AnnotationConfig;
+import com.mapbox.maps.plugin.annotation.AnnotationPlugin;
+import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+import com.mapbox.maps.plugin.gestures.GesturesPlugin;
+import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -35,13 +50,20 @@ import java.util.Locale;
 public class RegisterCentroActivity extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private boolean isModifyCentro;
     private AppDatabase db;
-    private EditText etNombre;
+
+    private TextInputLayout tilNombre;
+    private TextInputEditText etNombre;
+    private TextInputLayout tilDireccion;
     private EditText etDireccion;
+    private TextInputLayout tilNumRegistro;
     private EditText etNumRegistro;
+    private TextInputLayout tilTelefono;
     private EditText etTelefono;
+    private TextInputLayout tilEmail;
     private EditText etMail;
     private CheckBox cbWifi;
     private ImageView imageView;
@@ -51,6 +73,9 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> photoPickerLauncher;
 
+    private Point point; //Guardamos el point para gestionar la latitud y longuitud
+    private PointAnnotationManager pointAnnotationManager; //Para anotar el point así es común para todos
+
 
 
     @Override
@@ -59,6 +84,35 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register_centro);
         mapView = findViewById(R.id.mvCentro);
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
+
+
+        // Define las coordenadas por defecto
+        double defaultLatitude = -8.105759; // Latitud por defecto
+        double defaultLongitude = 42.644695; // Longitud por defecto
+
+        setCameraPosition(Point.fromLngLat(defaultLatitude, defaultLongitude)); //Fijamos la camara del mapa en el ultimo centro
+
+        GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
+        gesturesPlugin.addOnMapClickListener(point -> { //Cuando hacemos click en el mapa devolvemos un point
+            removeAllMarkers(); //Método creado para borrar los anteriores antes de seleccionar alguna para no tener problemas con los point
+            this.point = point; //Ese point lo guardamos para tener la longuitud y latitude
+            addMarker(point);
+            return true;
+        });
+
+        initializePointManager();// Para que se cree nada más arrancar
 
 
 
@@ -77,19 +131,24 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             // Cargar y mostrar la foto en el ImageView
                             loadImage(photoUriString);
 
-                            Snackbar.make(imageView, "Foto seleccionada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoSeleccionada, BaseTransientBottomBar.LENGTH_LONG).show();
                         } else {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
                             centro.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
-                            Snackbar.make(imageView, "Foto capturada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoCapturada, BaseTransientBottomBar.LENGTH_LONG).show();
                         }
                     }
                 }
         );
 
+        tilNombre = findViewById(R.id.tilNombre);
+        tilDireccion = findViewById(R.id.tilDireccion);
+        tilNumRegistro = findViewById(R.id.tilNumRegistro);
+        tilTelefono = findViewById(R.id.tilTelefono);
+        tilEmail = findViewById(R.id.tilEmail);
         etNombre = findViewById(R.id.etNombre);
         etDireccion = findViewById(R.id.etDireccion);
         etNumRegistro = findViewById(R.id.etNumRegistro);
@@ -119,14 +178,30 @@ public class RegisterCentroActivity extends AppCompatActivity {
         }
     }
 
+    private void setCameraPosition(Point point) {
+        CameraOptions cameraPosition = new CameraOptions.Builder()
+                .center(point)
+                .pitch(0.0)
+                .zoom(6.2)
+                .bearing(-17.6)
+                .build();
+
+        mapView.getMapboxMap().setCamera(cameraPosition);
+    }
 
     private void fillData(Centro centro) {
-        etNombre.setText(centro.getNombre());
-        etDireccion.setText(centro.getDireccion());
-        etMail.setText(centro.getEmail());
-        etNumRegistro.setText(centro.getNumRegistro());
-        etTelefono.setText(centro.getTelefono());
-        cbWifi.setChecked(centro.getTieneWifi());
+        //etNombre.setText(centro.getNombre());
+        //Para usarlo con Material
+        tilNombre.getEditText().setText(centro.getNombre());
+        tilDireccion.getEditText().setText(centro.getDireccion());
+        tilNumRegistro.getEditText().setText(centro.getNumRegistro());
+        tilTelefono.getEditText().setText(centro.getTelefono());
+        tilEmail.getEditText().setText(centro.getEmail());
+        //etDireccion.setText(centro.getDireccion());
+        //etMail.setText(centro.getEmail());
+        //etNumRegistro.setText(centro.getNumRegistro());
+        //etTelefono.setText(centro.getTelefono());
+        //cbWifi.setChecked(centro.getTieneWifi());
     }
 
     /*//usando la libreria Glide
@@ -191,12 +266,25 @@ public class RegisterCentroActivity extends AppCompatActivity {
     }
 
     public void registerCentro(View view) {
-        String nombre = etNombre.getText().toString();
-        String direccion = etDireccion.getText().toString();
-        String numRegistro = etNumRegistro.getText().toString();
-        String telefono = etTelefono.getText().toString();
-        String mail = etMail.getText().toString();
+        //String nombre = etNombre.getText().toString();
+        //Para usarlo con Material Design
+        String nombre = tilNombre.getEditText().getText().toString();
+        String direccion = tilDireccion.getEditText().getText().toString();
+        String numRegistro = tilNumRegistro.getEditText().getText().toString();
+        String telefono = tilTelefono.getEditText().getText().toString();
+        String mail = tilEmail.getEditText().getText().toString();
+        //String direccion = etDireccion.getText().toString();
+        //String numRegistro = etNumRegistro.getText().toString();
+        //String telefono = etTelefono.getText().toString();
+        //String mail = etMail.getText().toString();
         boolean tieneWifi = cbWifi.isChecked();
+
+        //If por si acaso el point no está creado, el usuario no ha selecionado nada en el mapa, asi no da error al crear la tarea porque falte latitude y longuitude
+        if (point == null) {
+            Toast.makeText(this, R.string.IndicaLaPosicionDelCentroEnElMapa, Toast.LENGTH_LONG).show();
+//            Snackbar.make(tilNambre, R.string.select_location_message, BaseTransientBottomBar.LENGTH_LONG); //tilNombre porque el Snackbar hay que asociarlo algún componente del layout
+            return;
+        }
 
 
 
@@ -207,9 +295,11 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setTelefono(telefono);
             centro.setEmail(mail);
             centro.setTieneWifi(tieneWifi);
+            centro.setLatitude(point.latitude());
+            centro.setLongitude(point.longitude());
 
             db.centroDao().update(centro);
-            Toast.makeText(this, "Centro modificado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.centroModificado, Toast.LENGTH_LONG).show();
         } else {
             centro.setNombre(nombre);
             centro.setDireccion(direccion);
@@ -217,8 +307,11 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setTelefono(telefono);
             centro.setEmail(mail);
             centro.setTieneWifi(tieneWifi);
+            centro.setLatitude(point.latitude());
+            centro.setLongitude(point.longitude());
+
             db.centroDao().insert(centro);
-            Toast.makeText(this, "Centro registrado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.centroRegistado, Toast.LENGTH_LONG).show();
         }
 
         etNombre.setText("");
@@ -228,6 +321,34 @@ public class RegisterCentroActivity extends AppCompatActivity {
         etTelefono.setText("");
         cbWifi.setChecked(false);
         etNombre.requestFocus();
+    }
+
+    /**
+     * Para inicializar el Pointmanager y asi la podemos dejar inicializada nada más arrancar en onCreate
+     */
+    private void initializePointManager() {
+        AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
+        AnnotationConfig annotationConfig = new AnnotationConfig();
+        pointAnnotationManager = PointAnnotationManagerKt.createPointAnnotationManager(annotationPlugin, annotationConfig);
+    }
+
+    /**
+     * Método para añadir un Marker sobre un mapa
+     * @param point le pasamos el point con los datos de latitude y longuitude
+     * @param "String" le podemos pasar un titulo para que aparezca en el mapa
+     */
+    private void addMarker(Point point) {
+        PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
+                .withPoint(point)
+                .withIconImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_centro_foreground)); //le pasamos el dibujo que queremos que pinte como icono, los podemos crea webinar 4 min 54
+        pointAnnotationManager.create(pointAnnotationOptions);
+    }
+
+    /**
+     * Para borrar el marker anterior y no aparezcan todos en el mapa
+     */
+    private void removeAllMarkers() {
+        pointAnnotationManager.deleteAll(); // Se Podría borra uno en concreto pasandole el point exacto
     }
 
 

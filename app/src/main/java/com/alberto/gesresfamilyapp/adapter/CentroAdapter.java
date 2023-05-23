@@ -1,5 +1,7 @@
 package com.alberto.gesresfamilyapp.adapter;
 
+
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +21,9 @@ import com.alberto.gesresfamilyapp.RegisterCentroActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.MapView;
+import com.google.android.material.textfield.TextInputLayout;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 
 
 import java.util.List;
@@ -31,6 +35,8 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     private Context context;
 
     private int selectedPosition;
+
+    private PointAnnotationManager pointAnnotationManager;
 
     public CentroAdapter(Context context, List<Centro> dataList) {
         this.context = context;
@@ -52,13 +58,13 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     //hace corresponder cada elemento de la lista para decir como pintarlo en cada elemento del layout
     @Override
     public void onBindViewHolder(CentroHolder holder, int position){
-        holder.centroNombre.setText(centroList.get(position).getNombre());
-        holder.centroDireccion.setText(centroList.get(position).getDireccion());
-        holder.centroMail.setText(centroList.get(position).getEmail());
-        holder.centroRegistro.setText(centroList.get(position).getNumRegistro());
-        holder.centroTelefono.setText(centroList.get(position).getTelefono());
+        holder.centroNombre.getEditText().setText(centroList.get(position).getNombre());
+        holder.centroDireccion.getEditText().setText(centroList.get(position).getDireccion());
+        holder.centroMail.getEditText().setText(centroList.get(position).getEmail());
+        holder.centroRegistro.getEditText().setText(centroList.get(position).getNumRegistro());
+        holder.centroTelefono.getEditText().setText(centroList.get(position).getTelefono());
         boolean tieneWifi = centroList.get(position).getTieneWifi();
-        String wifiStatus = tieneWifi ? "Tiene Wi-Fi" : "No tiene Wi-Fi";
+        String wifiStatus = tieneWifi ? "Tiene Wifi" : "No tiene Wifi";
         holder.centroWifi.setText(wifiStatus);
 
 
@@ -85,11 +91,11 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     }
 
     public class CentroHolder extends RecyclerView.ViewHolder{
-        public TextView centroNombre;
-        public TextView centroDireccion;
-        public TextView centroTelefono;
-        public TextView centroMail;
-        public TextView centroRegistro;
+        public TextInputLayout centroNombre;
+        public TextInputLayout centroDireccion;
+        public TextInputLayout centroTelefono;
+        public TextInputLayout centroMail;
+        public TextInputLayout centroRegistro;
         public TextView centroWifi;
         public ImageView centroImagen;
         public MapView centroMap;
@@ -100,18 +106,20 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         public View parentView;
         public Button btMod;
 
+
         public CentroHolder(View view) {
             super(view);
             parentView = view;
 
-            centroNombre = view.findViewById(R.id.tvNombre);
-            centroDireccion = view.findViewById(R.id.tvDireccion);
-            centroRegistro = view.findViewById(R.id.tvNumRegistro);
-            centroTelefono = view.findViewById(R.id.tvTelefono);
-            centroMail = view.findViewById(R.id.tvEmail);
+            centroNombre = view.findViewById(R.id.tilNombre);
+            centroDireccion = view.findViewById(R.id.tilDireccion);
+            centroRegistro = view.findViewById(R.id.tilNumRegistro);
+            centroTelefono = view.findViewById(R.id.tilTelefono);
+            centroMail = view.findViewById(R.id.tilEmail);
             centroWifi = view.findViewById(R.id.tvWifi);
             centroImagen = view.findViewById(R.id.ivCentro);
-            centroMap = view.findViewById(R.id.mvCentro);
+            //centroMap = view.findViewById(R.id.mvCentro);
+
 
             btDelete = view.findViewById(R.id.btDelete);
 
@@ -133,6 +141,8 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
             btMod.setOnClickListener(v-> modifyCentro(getAdapterPosition()));
         }
+
+
 
 /*        private void doTask(int position){
             Car car = carList.get(position);
@@ -158,9 +168,9 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
         private void deleteCentro(int position){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Estas seguro de Borrar el centro")
-                    .setTitle("Borar Centro")
-                    .setPositiveButton("Si", (dialog, id) -> {
+            builder.setMessage(R.string.estasSeguroDeBorrarElCentro)
+                    .setTitle(R.string.borrarCentro)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         final AppDatabase db = Room.databaseBuilder(context, AppDatabase.class, "Gesresfamily")
                                 .allowMainThreadQueries().build();
                         Centro centro = centroList.get(position);
@@ -169,16 +179,16 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
                         centroList.remove(position);
                         notifyItemRemoved(position);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
 
         private void modifyCentro(int position) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("¿Deseas modificar el centro?")
-                    .setTitle("Confirmar Modificación")
-                    .setPositiveButton("Sí", (dialog, id) -> {
+            builder.setMessage(R.string.deseasModificarElCentro)
+                    .setTitle(R.string.confirmarModificación)
+                    .setPositiveButton(R.string.si, (dialog, id) -> {
                         Centro centro = centroList.get(position);
 
                         Intent intent = new Intent(context, RegisterCentroActivity.class);
@@ -193,7 +203,7 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
 
                         context.startActivity(intent);
                     })
-                    .setNegativeButton("No", (dialog, id) -> dialog.dismiss());
+                    .setNegativeButton(R.string.no, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
             dialog.show();

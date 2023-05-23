@@ -22,6 +22,7 @@ import androidx.room.Room;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Profesional;
 import com.alberto.gesresfamilyapp.domain.Residente;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
@@ -58,6 +59,18 @@ public class RegisterResidenteActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register_residente);
 
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
+
 
         photoPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -74,14 +87,14 @@ public class RegisterResidenteActivity extends AppCompatActivity {
                             // Cargar y mostrar la foto en el ImageView
                             loadImage(photoUriString);
 
-                            Snackbar.make(imageView, "Foto seleccionada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoSeleccionada, BaseTransientBottomBar.LENGTH_LONG).show();
                         } else {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
                             residente.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
-                            Snackbar.make(imageView, "Foto capturada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoCapturada, BaseTransientBottomBar.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -214,7 +227,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
             //residente.setFechaNacimiento(fechaNac);
             residente.setSexo(sexo);
             db.residenteDao().update(residente);
-            Toast.makeText(this, "Residente modificado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.residenteModificado, Toast.LENGTH_LONG).show();
         } else {
             residente.setNombre(nombre);
             residente.setApellidos(apellidos);
@@ -222,7 +235,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
             //residente.setFechaNacimiento(fechaNac);
             residente.setSexo(sexo);
             db.residenteDao().insert(residente);
-            Toast.makeText(this, "Residente registrado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.residenteRegistado, Toast.LENGTH_LONG).show();
         }
 
         etNombre.setText("");

@@ -21,6 +21,7 @@ import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Profesional;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
@@ -57,6 +58,18 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register_profesional);
 
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
+
 
         photoPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -73,14 +86,14 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
                             // Cargar y mostrar la foto en el ImageView
                             loadImage(photoUriString);
 
-                            Snackbar.make(imageView, "Foto seleccionada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoSeleccionada, BaseTransientBottomBar.LENGTH_LONG).show();
                         } else {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
                             profesional.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
-                            Snackbar.make(imageView, "Foto capturada", BaseTransientBottomBar.LENGTH_LONG).show();
+                            Snackbar.make(imageView, R.string.fotoCapturada, BaseTransientBottomBar.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -213,7 +226,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
             //profesional.setFechaNacimiento(fechaNac);
             profesional.setCategoria(categoria);
             db.profesionalDao().update(profesional);
-            Toast.makeText(this, "Profesional modificado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.profesionalModificado, Toast.LENGTH_LONG).show();
         } else {
             profesional.setNombre(nombre);
             profesional.setApellidos(apellidos);
@@ -222,7 +235,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
             profesional.setCategoria(categoria);
 
             db.profesionalDao().insert(profesional);
-            Toast.makeText(this, "Profesional registrado", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.profesionalRegistado, Toast.LENGTH_LONG).show();
         }
 
         etNombre.setText("");

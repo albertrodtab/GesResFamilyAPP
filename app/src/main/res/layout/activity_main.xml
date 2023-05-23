@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/background"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:baselineAligned="false"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
@@ -32,10 +32,11 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="CENTROS"
+            android:text="@string/btCentros"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
 
         <Button
@@ -47,10 +48,11 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="RESIDENTES"
+            android:text="@string/btResidentes"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
 
         <Button
@@ -62,24 +64,47 @@
             android:insetTop="10dp"
             android:insetRight="10dp"
             android:insetBottom="10dp"
-            android:text="PROFESIONALES"
+            android:text="@string/btProfesionales"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlinedTextFielUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="@string/tvUsuario"
+                android:padding="5dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--<TextView
                 android:id="@+id/textView2"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="#00E5FF"
-                android:text="Usuario" />
+                android:text="@string/tvUsuario" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName"
@@ -90,23 +115,43 @@
                 android:hint="Introduce tu usuario"
                 android:inputType="textPersonName"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/black" />
+                android:textColor="@color/black" />-->
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlinedTextFieldPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="@string/tvContraseña"
+                android:padding="5dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--<TextView
                 android:id="@+id/textView3"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#00E5FF"
-                android:text="Contraseña" />
+                android:text="@string/tvContraseña" />
 
             <EditText
                 android:id="@+id/editTextTextPassword"
@@ -115,28 +160,50 @@
                 android:background="#00E5FF"
                 android:ems="10"
                 android:hint="Introduce tu contraseña"
-                android:inputType="textPassword" />
+                android:inputType="textPassword" />-->
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="fill_horizontal"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="fill_horizontal|center_vertical|fill_vertical"
             android:orientation="horizontal">
 
-            <Button
+            <!-- <Button
                 android:id="@+id/button"
                 android:layout_width="172dp"
                 android:layout_height="wrap_content"
-                android:text="Login" />
+                android:text="@string/btLogin"/>-->
 
             <Button
+                android:id="@+id/elevatedButtonLogin"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#D5ECE7"
+                android:text="@string/btLogin"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!--<Button
                 android:id="@+id/btRegistrarse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Registrarse" />
+                android:text="@string/btRegistrarse" />-->
+
+            <Button
+                android:id="@+id/elevatedButtonRegistrarse"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#D5ECE7"
+                android:text="@string/btRegistrarse"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
