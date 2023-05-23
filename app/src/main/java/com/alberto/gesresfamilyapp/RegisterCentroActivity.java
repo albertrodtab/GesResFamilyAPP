@@ -22,8 +22,11 @@ import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.maps.CameraOptions;
@@ -51,10 +54,16 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
     private boolean isModifyCentro;
     private AppDatabase db;
-    private EditText etNombre;
+
+    private TextInputLayout tilNombre;
+    private TextInputEditText etNombre;
+    private TextInputLayout tilDireccion;
     private EditText etDireccion;
+    private TextInputLayout tilNumRegistro;
     private EditText etNumRegistro;
+    private TextInputLayout tilTelefono;
     private EditText etTelefono;
+    private TextInputLayout tilEmail;
     private EditText etMail;
     private CheckBox cbWifi;
     private ImageView imageView;
@@ -75,6 +84,19 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_register_centro);
         mapView = findViewById(R.id.mvCentro);
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
+
 
         // Define las coordenadas por defecto
         double defaultLatitude = -8.105759; // Latitud por defecto
@@ -122,6 +144,11 @@ public class RegisterCentroActivity extends AppCompatActivity {
                 }
         );
 
+        tilNombre = findViewById(R.id.tilNombre);
+        tilDireccion = findViewById(R.id.tilDireccion);
+        tilNumRegistro = findViewById(R.id.tilNumRegistro);
+        tilTelefono = findViewById(R.id.tilTelefono);
+        tilEmail = findViewById(R.id.tilEmail);
         etNombre = findViewById(R.id.etNombre);
         etDireccion = findViewById(R.id.etDireccion);
         etNumRegistro = findViewById(R.id.etNumRegistro);
@@ -163,12 +190,18 @@ public class RegisterCentroActivity extends AppCompatActivity {
     }
 
     private void fillData(Centro centro) {
-        etNombre.setText(centro.getNombre());
-        etDireccion.setText(centro.getDireccion());
-        etMail.setText(centro.getEmail());
-        etNumRegistro.setText(centro.getNumRegistro());
-        etTelefono.setText(centro.getTelefono());
-        cbWifi.setChecked(centro.getTieneWifi());
+        //etNombre.setText(centro.getNombre());
+        //Para usarlo con Material
+        tilNombre.getEditText().setText(centro.getNombre());
+        tilDireccion.getEditText().setText(centro.getDireccion());
+        tilNumRegistro.getEditText().setText(centro.getNumRegistro());
+        tilTelefono.getEditText().setText(centro.getTelefono());
+        tilEmail.getEditText().setText(centro.getEmail());
+        //etDireccion.setText(centro.getDireccion());
+        //etMail.setText(centro.getEmail());
+        //etNumRegistro.setText(centro.getNumRegistro());
+        //etTelefono.setText(centro.getTelefono());
+        //cbWifi.setChecked(centro.getTieneWifi());
     }
 
     /*//usando la libreria Glide
@@ -233,17 +266,23 @@ public class RegisterCentroActivity extends AppCompatActivity {
     }
 
     public void registerCentro(View view) {
-        String nombre = etNombre.getText().toString();
-        String direccion = etDireccion.getText().toString();
-        String numRegistro = etNumRegistro.getText().toString();
-        String telefono = etTelefono.getText().toString();
-        String mail = etMail.getText().toString();
+        //String nombre = etNombre.getText().toString();
+        //Para usarlo con Material Design
+        String nombre = tilNombre.getEditText().getText().toString();
+        String direccion = tilDireccion.getEditText().getText().toString();
+        String numRegistro = tilNumRegistro.getEditText().getText().toString();
+        String telefono = tilTelefono.getEditText().getText().toString();
+        String mail = tilEmail.getEditText().getText().toString();
+        //String direccion = etDireccion.getText().toString();
+        //String numRegistro = etNumRegistro.getText().toString();
+        //String telefono = etTelefono.getText().toString();
+        //String mail = etMail.getText().toString();
         boolean tieneWifi = cbWifi.isChecked();
 
         //If por si acaso el point no está creado, el usuario no ha selecionado nada en el mapa, asi no da error al crear la tarea porque falte latitude y longuitude
         if (point == null) {
             Toast.makeText(this, R.string.IndicaLaPosicionDelCentroEnElMapa, Toast.LENGTH_LONG).show();
-//            Snackbar.make(etName, R.string.select_location_message, BaseTransientBottomBar.LENGTH_LONG); //etName porque el Snackbar hay que asociarlo algún componente del layout
+//            Snackbar.make(tilNambre, R.string.select_location_message, BaseTransientBottomBar.LENGTH_LONG); //tilNombre porque el Snackbar hay que asociarlo algún componente del layout
             return;
         }
 
@@ -285,7 +324,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
     }
 
     /**
-     * Para inicializar el Pointmanager y asi la podemos dejar inicializada nada más arracar en onCreate
+     * Para inicializar el Pointmanager y asi la podemos dejar inicializada nada más arrancar en onCreate
      */
     private void initializePointManager() {
         AnnotationPlugin annotationPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
@@ -296,7 +335,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
     /**
      * Método para añadir un Marker sobre un mapa
      * @param point le pasamos el point con los datos de latitude y longuitude
-     * @param "String" le podemos pasar un titulo para que aparezca en el mapa min 54 webinar 4 de hay se puede sacar
+     * @param "String" le podemos pasar un titulo para que aparezca en el mapa
      */
     private void addMarker(Point point) {
         PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
@@ -309,7 +348,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
      * Para borrar el marker anterior y no aparezcan todos en el mapa
      */
     private void removeAllMarkers() {
-        pointAnnotationManager.deleteAll(); // Se Podria borra uno en concreto pasandole el point exacto
+        pointAnnotationManager.deleteAll(); // Se Podría borra uno en concreto pasandole el point exacto
     }
 
 

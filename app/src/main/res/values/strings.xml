@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GesResFamilyApp</string>
+    <string name="app_name">GesResFamily</string>
     <string name="btRegresar">Regresar</string>
     <string name="btResidentes">RESIDENTES</string>
     <string name="btProfesionales">PROFESIONALES</string>
@@ -47,4 +47,8 @@
     <string name="profesionalRegistado">Profesional Registrado</string>
     <string name="btCentros">CENTROS</string>
     <string name="IndicaLaPosicionDelCentroEnElMapa">Indica la posición del Centro en el mapa</string>
+    <string name="titMaps">Mapa Centros</string>
+    <string name="titCentros">Centros</string>
+    <string name="titProfesinales">Profesionales</string>
+    <string name="titResidentes">Residentes</string>
 </resources>

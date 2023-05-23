@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
@@ -45,10 +47,21 @@ public class MapsActivity extends AppCompatActivity {
         mapView = findViewById(R.id.mapView); //cargamos el mapa
         initializePointManager(); // inicializamos el pointmanager
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
 
 
         /**
-         * No traemos todas los puentes que hay para pintar todas en un mapa
+         * buscamos el centro y lo traemos para recuperar su información
          */
         final AppDatabase db = Room.databaseBuilder(this, AppDatabase.class, DATABASE_NAME)
                 .allowMainThreadQueries().build();
@@ -128,48 +141,7 @@ public class MapsActivity extends AppCompatActivity {
 //        });
 //    }
 
-        /* *//**
-         * PAra crear el menu (el actionBar)
-         * @param menu
-         * @return
-         *//*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.actionbar, menu); //Inflamos el menu
-        return true;
-    }
 
-    *//**
-         * Para cuando elegimos una opcion del menu
-         * @param item
-         * @return
-         *//*
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.register_build) { //Evaluar a que opcion hemos pichado
-            Intent intent = new Intent(this, RegisterBrigdeActivity.class); //donde nos manda al pinchar sobre el boton + en el action bar
-            startActivity(intent);
-            return true;
-        }
-        else if (item.getItemId() == R.id.view_map) { //Para cuando pulsan en la boton del mapa en el actionbar
-            Intent intent = new Intent(this, MapsActivity.class); //donde nos manda al pinchar sobre el boton mapas en el action bar
-            startActivity(intent);
-            return true;
-        } else if (item.getItemId() == R.id.register_inspector) {
-            Intent intent    = new Intent(this, InspectorRegisterActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (item.getItemId() == R.id.go_init) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            return true;
-        } else if (item.getItemId() == R.id.ab_back) {
-            onBackPressed();
-            return true;
-        }
-
-        return false;
-    }*/
 
     }
 }
