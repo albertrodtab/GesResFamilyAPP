@@ -47,4 +47,8 @@
     <string name="profesionalRegistado">Registered Profesional</string>
     <string name="btCentros">CENTERS</string>
     <string name="IndicaLaPosicionDelCentroEnElMapa">Select the center in the map</string>
+    <string name="titMaps">Map Centers</string>
+    <string name="titProfesinales">Profesionals</string>
+    <string name="titResidentes">Residents</string>
+    <string name="titCentros">Centers</string>
 </resources>

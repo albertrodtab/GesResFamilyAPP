@@ -22,6 +22,7 @@ import androidx.room.Room;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Profesional;
 import com.alberto.gesresfamilyapp.domain.Residente;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
@@ -57,6 +58,18 @@ public class RegisterResidenteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_register_residente);
+
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción a realizar al hacer clic en el ícono de navegación
+                // Por ejemplo, cerrar la actividad o realizar alguna acción específica
+                onBackPressed(); // Ejemplo: retroceder a la actividad anterior
+            }
+        });
 
 
         photoPickerLauncher = registerForActivityResult(

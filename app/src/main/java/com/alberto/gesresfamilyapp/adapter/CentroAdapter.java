@@ -21,6 +21,7 @@ import com.alberto.gesresfamilyapp.RegisterCentroActivity;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 
@@ -57,11 +58,11 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     //hace corresponder cada elemento de la lista para decir como pintarlo en cada elemento del layout
     @Override
     public void onBindViewHolder(CentroHolder holder, int position){
-        holder.centroNombre.setText(centroList.get(position).getNombre());
-        holder.centroDireccion.setText(centroList.get(position).getDireccion());
-        holder.centroMail.setText(centroList.get(position).getEmail());
-        holder.centroRegistro.setText(centroList.get(position).getNumRegistro());
-        holder.centroTelefono.setText(centroList.get(position).getTelefono());
+        holder.centroNombre.getEditText().setText(centroList.get(position).getNombre());
+        holder.centroDireccion.getEditText().setText(centroList.get(position).getDireccion());
+        holder.centroMail.getEditText().setText(centroList.get(position).getEmail());
+        holder.centroRegistro.getEditText().setText(centroList.get(position).getNumRegistro());
+        holder.centroTelefono.getEditText().setText(centroList.get(position).getTelefono());
         boolean tieneWifi = centroList.get(position).getTieneWifi();
         String wifiStatus = tieneWifi ? "Tiene Wifi" : "No tiene Wifi";
         holder.centroWifi.setText(wifiStatus);
@@ -90,11 +91,11 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     }
 
     public class CentroHolder extends RecyclerView.ViewHolder{
-        public TextView centroNombre;
-        public TextView centroDireccion;
-        public TextView centroTelefono;
-        public TextView centroMail;
-        public TextView centroRegistro;
+        public TextInputLayout centroNombre;
+        public TextInputLayout centroDireccion;
+        public TextInputLayout centroTelefono;
+        public TextInputLayout centroMail;
+        public TextInputLayout centroRegistro;
         public TextView centroWifi;
         public ImageView centroImagen;
         public MapView centroMap;
@@ -110,11 +111,11 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
             super(view);
             parentView = view;
 
-            centroNombre = view.findViewById(R.id.tvNombre);
-            centroDireccion = view.findViewById(R.id.tvDireccion);
-            centroRegistro = view.findViewById(R.id.tvNumRegistro);
-            centroTelefono = view.findViewById(R.id.tvTelefono);
-            centroMail = view.findViewById(R.id.tvEmail);
+            centroNombre = view.findViewById(R.id.tilNombre);
+            centroDireccion = view.findViewById(R.id.tilDireccion);
+            centroRegistro = view.findViewById(R.id.tilNumRegistro);
+            centroTelefono = view.findViewById(R.id.tilTelefono);
+            centroMail = view.findViewById(R.id.tilEmail);
             centroWifi = view.findViewById(R.id.tvWifi);
             centroImagen = view.findViewById(R.id.ivCentro);
             //centroMap = view.findViewById(R.id.mvCentro);

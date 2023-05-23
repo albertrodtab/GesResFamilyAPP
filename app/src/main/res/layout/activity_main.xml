@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/background"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:baselineAligned="false"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
@@ -36,6 +36,7 @@
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
 
         <Button
@@ -51,6 +52,7 @@
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
 
         <Button
@@ -66,25 +68,32 @@
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldUser"
+                android:id="@+id/outlinedTextFielUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:hint="@string/tvUsuario"
+                android:padding="5dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Introduce tu usuario"
+
 
                     />
 
@@ -113,23 +122,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textFieldPass"
+                android:id="@+id/outlinedTextFieldPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:hint="@string/tvContraseña"
+                android:padding="5dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
                 app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="introduce tu contraseña"
-                    android:inputType="textPassword"
-
-                    />
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,7 +167,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_margin="10dp"
             android:gravity="fill_horizontal|center_vertical|fill_vertical"
             android:orientation="horizontal">
 
