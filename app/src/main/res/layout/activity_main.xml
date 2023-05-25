@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/background"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
@@ -23,11 +23,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <!--<Button
             android:id="@+id/btCentros"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#8BC34A"
+            android:backgroundTintMode="add"
             android:insetLeft="10dp"
             android:insetTop="10dp"
             android:insetRight="10dp"
@@ -37,9 +37,96 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="20dp"
-            app:icon="@mipmap/ic_centro_foreground" />
+            app:icon="@mipmap/ic_ancianos_round" />-->
 
-        <Button
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp">
+
+                <ImageButton
+                    android:id="@+id/imageButtonCentros"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@mipmap/ic_centro_mayores" />
+
+                <Button
+                    android:id="@+id/elevatedButtonCentros"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTintMode="src_atop"
+                    android:text="@string/btCentros"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp">
+
+                <ImageButton
+                    android:id="@+id/imageButtonProfesionales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@mipmap/ic_profesional" />
+
+                <Button
+                    android:id="@+id/elevatedButtonProfesionales"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTintMode="src_atop"
+                    android:text="@string/btProfesionales"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp">
+
+                <ImageButton
+                    android:id="@+id/imageButtonResidentes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:src="@mipmap/ic_residente" />
+
+                <Button
+                    android:id="@+id/elevatedButtonResidentes"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTintMode="src_atop"
+                    android:text="@string/btResidentes"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+        </TableLayout>
+
+
+
+        <!--<Button
             android:id="@+id/btResidentes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,9 +140,9 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="20dp"
-            app:icon="@mipmap/ic_centro_foreground" />
+            app:icon="@mipmap/ic_centro_foreground" />-->
 
-        <Button
+        <!--<Button
             android:id="@+id/btProfesionales"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +157,7 @@
             android:textStyle="bold"
             app:cornerRadius="20dp"
             app:icon="@mipmap/ic_centro_foreground" />
+-->
 
         <LinearLayout
             android:layout_width="match_parent"

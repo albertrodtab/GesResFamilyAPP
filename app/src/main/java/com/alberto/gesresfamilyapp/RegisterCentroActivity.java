@@ -2,12 +2,17 @@ package com.alberto.gesresfamilyapp;
 
 import static com.alberto.gesresfamilyapp.db.Constants.DATABASE_NAME;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,6 +22,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.room.Room;
 
@@ -42,6 +49,7 @@ import com.mapbox.maps.plugin.gestures.GesturesUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,6 +59,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
     private static final int REQUEST_SELECT_PHOTO = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     private boolean isModifyCentro;
     private AppDatabase db;
@@ -67,6 +76,8 @@ public class RegisterCentroActivity extends AppCompatActivity {
     private EditText etMail;
     private CheckBox cbWifi;
     private ImageView imageView;
+    private Bitmap imageBitmap;
+    private boolean imageOK = false;
     private MapView mapView;
 
     private Centro centro;
@@ -96,13 +107,14 @@ public class RegisterCentroActivity extends AppCompatActivity {
                 onBackPressed(); // Ejemplo: retroceder a la actividad anterior
             }
         });
-
+        //comprobar permisos para usar la cámara
+        checkCameraPermission();
 
         // Define las coordenadas por defecto
         double defaultLatitude = -8.105759; // Latitud por defecto
         double defaultLongitude = 42.644695; // Longitud por defecto
 
-        setCameraPosition(Point.fromLngLat(defaultLatitude, defaultLongitude)); //Fijamos la camara del mapa en el ultimo centro
+        setCameraPosition(Point.fromLngLat(defaultLatitude, defaultLongitude)); //Fijamos la camara del mapa en la posicion por defecto
 
         GesturesPlugin gesturesPlugin = GesturesUtils.getGestures(mapView);
         gesturesPlugin.addOnMapClickListener(point -> { //Cuando hacemos click en el mapa devolvemos un point
@@ -113,8 +125,6 @@ public class RegisterCentroActivity extends AppCompatActivity {
         });
 
         initializePointManager();// Para que se cree nada más arrancar
-
-
 
         photoPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -132,14 +142,14 @@ public class RegisterCentroActivity extends AppCompatActivity {
                             loadImage(photoUriString);
 
                             Snackbar.make(imageView, R.string.fotoSeleccionada, BaseTransientBottomBar.LENGTH_LONG).show();
-                        } else {
+                        } /*else {
                             // Foto capturada con la cámara
                             Uri photoUri = Uri.fromFile(createTempImageFile());
                             String photoUriString = photoUri.toString();
                             centro.setPhotoUri(photoUriString);
                             loadImage(photoUriString);
                             Snackbar.make(imageView, R.string.fotoCapturada, BaseTransientBottomBar.LENGTH_LONG).show();
-                        }
+                        }*/
                     }
                 }
         );
@@ -178,17 +188,6 @@ public class RegisterCentroActivity extends AppCompatActivity {
         }
     }
 
-    private void setCameraPosition(Point point) {
-        CameraOptions cameraPosition = new CameraOptions.Builder()
-                .center(point)
-                .pitch(0.0)
-                .zoom(6.2)
-                .bearing(-17.6)
-                .build();
-
-        mapView.getMapboxMap().setCamera(cameraPosition);
-    }
-
     private void fillData(Centro centro) {
         //etNombre.setText(centro.getNombre());
         //Para usarlo con Material
@@ -197,6 +196,14 @@ public class RegisterCentroActivity extends AppCompatActivity {
         tilNumRegistro.getEditText().setText(centro.getNumRegistro());
         tilTelefono.getEditText().setText(centro.getTelefono());
         tilEmail.getEditText().setText(centro.getEmail());
+        cbWifi.setChecked(centro.getTieneWifi());
+        //loadImage(centro.getPhotoUri());
+
+        //recupero la información de coordenadas del centro y lo pinto en el mapa y centro el foco en el
+        Point pointCentro = Point.fromLngLat(centro.getLongitude(),centro.getLatitude());
+        setCameraPosition(pointCentro); //Fijamos la camara en la posicion del centro
+        addMarker(pointCentro);
+
         //etDireccion.setText(centro.getDireccion());
         //etMail.setText(centro.getEmail());
         //etNumRegistro.setText(centro.getNumRegistro());
@@ -204,19 +211,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
         //cbWifi.setChecked(centro.getTieneWifi());
     }
 
-    /*//usando la libreria Glide
-    private void loadImage(String photoUriString) {
-        if (photoUriString != null) {
-            Uri photoUri = Uri.parse(photoUriString);
-            Glide.with(this)
-                    .load(photoUri)
-                    .into(imageView);
-        } else {
-            Glide.with(this)
-                    .load(R.drawable.vector_sector_sanidad)
-                    .into(imageView);
-        }
-    }*/
+
     //Usando la libreria picasso
     private void loadImage(String photoUriString) {
         if (photoUriString != null) {
@@ -233,36 +228,22 @@ public class RegisterCentroActivity extends AppCompatActivity {
 
     public void selectPhoto(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        /*Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // Crea un archivo temporal para guardar la foto capturada por la cámara
+        //Crea un archivo temporal para guardar la foto capturada por la cámara
         File photoFile = createTempImageFile();
 
         if (photoFile != null) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", photoFile);
+            //startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
         }
-
+*/
         Intent chooserIntent = Intent.createChooser(galleryIntent, "Seleccionar foto");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{cameraIntent});
+        //chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{cameraIntent});
 
         //startActivityForResult(chooserIntent, REQUEST_SELECT_PHOTO);
         photoPickerLauncher.launch(chooserIntent);
-    }
-
-    private File createTempImageFile() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-
-        try {
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
-            return imageFile;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public void registerCentro(View view) {
@@ -286,7 +267,15 @@ public class RegisterCentroActivity extends AppCompatActivity {
             return;
         }
 
+        //Conseguimos la ruta de almacenamiento, si no existe, la creamos
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "GesResFamilyApp");
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
+        }
 
+        //Le ponemos nombre al archivo y la extension
+        File imageFile = new File(storageDir, System.currentTimeMillis() + ".jpg");
+        Log.i("RegisterCentro", "register - filePath: " + imageFile);
 
         if (isModifyCentro) {
             centro.setNombre(nombre);
@@ -295,11 +284,40 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setTelefono(telefono);
             centro.setEmail(mail);
             centro.setTieneWifi(tieneWifi);
-            centro.setLatitude(point.latitude());
-            centro.setLongitude(point.longitude());
+            //centro.setLatitude(point.latitude());
+            //centro.setLongitude(point.longitude());
 
-            db.centroDao().update(centro);
-            Toast.makeText(this, R.string.centroModificado, Toast.LENGTH_LONG).show();
+            /*if(imageOK){
+                //Guardamos el archivo en el almacenamiento
+                saveBitmapToFile(imageBitmap, imageFile);
+                centro.setPhotoUri(imageFile.toString());
+            } else {
+                centro.setPhotoUri("");
+            }*/
+
+            if (nombre == null || nombre.isEmpty()) {
+                Toast.makeText(this, R.string.centroNombreVacio, Toast.LENGTH_LONG).show();
+                etNombre.setText(nombre);
+                etDireccion.setText(direccion);
+                etMail.setText(mail);
+                etNumRegistro.setText(numRegistro);
+                etTelefono.setText(telefono);
+                cbWifi.setChecked(tieneWifi);
+
+            } else{
+
+                db.centroDao().update(centro);
+                Toast.makeText(this, R.string.centroModificado, Toast.LENGTH_LONG).show();
+
+                etNombre.setText("");
+                etDireccion.setText("");
+                etMail.setText("");
+                etNumRegistro.setText("");
+                etTelefono.setText("");
+                cbWifi.setChecked(false);
+                etNombre.requestFocus();
+            }
+
         } else {
             centro.setNombre(nombre);
             centro.setDireccion(direccion);
@@ -310,17 +328,100 @@ public class RegisterCentroActivity extends AppCompatActivity {
             centro.setLatitude(point.latitude());
             centro.setLongitude(point.longitude());
 
-            db.centroDao().insert(centro);
-            Toast.makeText(this, R.string.centroRegistado, Toast.LENGTH_LONG).show();
+            //Guardamos el archivo en el almacenamiento
+            //saveBitmapToFile(imageBitmap, imageFile);
+            //centro.setPhotoUri(imageFile.toString());
+
+            if (nombre == null || nombre.isEmpty()) {
+                Toast.makeText(this, R.string.centroNombreVacio, Toast.LENGTH_LONG).show();
+                etNombre.setText(nombre);
+                etDireccion.setText(direccion);
+                etMail.setText(mail);
+                etNumRegistro.setText(numRegistro);
+                etTelefono.setText(telefono);
+                cbWifi.setChecked(tieneWifi);
+
+            } else{
+
+                db.centroDao().insert(centro);
+                Toast.makeText(this, R.string.centroRegistado, Toast.LENGTH_LONG).show();
+                etNombre.setText("");
+                etDireccion.setText("");
+                etMail.setText("");
+                etNumRegistro.setText("");
+                etTelefono.setText("");
+                cbWifi.setChecked(false);
+                etNombre.requestFocus();
+            } /*else {
+                if (!imageOK) {
+                    Toast.makeText(this, "por favor toma una foto", Toast.LENGTH_LONG).show();
+                }
+
+            }*/
         }
 
-        etNombre.setText("");
-        etDireccion.setText("");
-        etMail.setText("");
-        etNumRegistro.setText("");
-        etTelefono.setText("");
-        cbWifi.setChecked(false);
-        etNombre.requestFocus();
+        db.close();
+    }
+
+    private void saveBitmapToFile(Bitmap bitmap, File file) {
+        try {
+            // Crea un archivo para la imagen en el directorio público de imágenes del almacenamiento externo
+            file.createNewFile();
+
+            // Crea un flujo de salida para el archivo
+            FileOutputStream fos = new FileOutputStream(file);
+
+            // Comprime el Bitmap y lo escribe en el flujo de salida
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+            // Cierra el flujo de salida
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void makePhoto(View view){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "error abriendo la camara", Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.CAMERA)) {
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},226);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+
+            imageView.setImageBitmap(imageBitmap);
+            imageOK = true;
+        }
+
+    }
+
+    private void setCameraPosition(Point point) {
+        CameraOptions cameraPosition = new CameraOptions.Builder()
+                .center(point)
+                .pitch(0.0)
+                .zoom(10.0)
+                .bearing(-17.6)
+                .build();
+
+        mapView.getMapboxMap().setCamera(cameraPosition);
     }
 
     /**
@@ -340,7 +441,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
     private void addMarker(Point point) {
         PointAnnotationOptions pointAnnotationOptions = new PointAnnotationOptions()
                 .withPoint(point)
-                .withIconImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_centro_foreground)); //le pasamos el dibujo que queremos que pinte como icono, los podemos crea webinar 4 min 54
+                .withIconImage(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_centro_foreground)); //le pasamos el dibujo que queremos que pinte como icono
         pointAnnotationManager.create(pointAnnotationOptions);
     }
 
@@ -351,6 +452,10 @@ public class RegisterCentroActivity extends AppCompatActivity {
         pointAnnotationManager.deleteAll(); // Se Podría borra uno en concreto pasandole el point exacto
     }
 
+    public void cancel(View view) {
+        onBackPressed();
+    }
+}
 
 //Con atctivityResultLauncher ya no hace falta.
     /*@Override
@@ -393,9 +498,33 @@ public class RegisterCentroActivity extends AppCompatActivity {
         }
     }*/
 
+//Crea un archivo temporal para guardar la foto capturada
+   /* private File createTempImageFile() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
 
-    public void cancel(View view) {
-        onBackPressed();
+        try {
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+            return imageFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
-}
+*/
 
+/*//usando la libreria Glide
+    private void loadImage(String photoUriString) {
+        if (photoUriString != null) {
+            Uri photoUri = Uri.parse(photoUriString);
+            Glide.with(this)
+                    .load(photoUri)
+                    .into(imageView);
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.vector_sector_sanidad)
+                    .into(imageView);
+        }
+    }*/
