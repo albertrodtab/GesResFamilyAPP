@@ -14,6 +14,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class ViewCentroActivity extends AppCompatActivity {
 
     public List<Centro> centros;
     private MapView mapView;
+    TextInputLayout telefono = findViewById(R.id.tilTelefono);
     private PointAnnotationManager pointAnnotationManager;
 
     @Override
@@ -45,7 +47,6 @@ public class ViewCentroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_centro);
         //mapView = findViewById(R.id.mvCentro);
         initializePointManager();
-
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
@@ -117,11 +118,11 @@ public class ViewCentroActivity extends AppCompatActivity {
         // Obtener el valor de tieneWifi del objeto centro
         boolean tieneWifi = centro.getTieneWifi();
         // Actualizar el estado del TextView tvWifi
-        TextView tvWifi = findViewById(R.id.tvWifi);
+        TextInputLayout tvWifi = findViewById(R.id.tilWifi);
         if (tieneWifi) {
-            tvWifi.setText("Tiene Wi-Fi");
+            tvWifi.getEditText().setText("Tiene Wi-Fi");
         } else {
-            tvWifi.setText("No tiene Wi-Fi");
+            tvWifi.getEditText().setText("No tiene Wi-Fi");
         }
 
         ImageView foto = findViewById(R.id.ivCentro);
@@ -133,7 +134,8 @@ public class ViewCentroActivity extends AppCompatActivity {
         mail.getEditText().setText(centro.getEmail());
         addCenterToMap(centro);
 
-        // Agrega el OnClickListener al campo de teléfono
+
+        // Agrega el OnClickListener al ibTelefon
         telefono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,14 +146,12 @@ public class ViewCentroActivity extends AppCompatActivity {
 
     }
 
-
-
-    private void dialPhoneNumber(String phoneNumber) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+    public void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
-        if (intent.resolveActivity(getPackageManager()) != null) {
+
             startActivity(intent);
-        }
+
     }
     public void cancel(View view) {
         onBackPressed();

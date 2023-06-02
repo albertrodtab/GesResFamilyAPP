@@ -65,22 +65,42 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilTelefono"
-            style="?attr/textInputFilledStyle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:clickable="true"
-            android:hint="@string/tvTelefono">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etTelefono"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/ibTelefono"
+                android:layout_width="108dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:onClick="dialPhoneNumber"
+                android:src="@android:drawable/stat_sys_phone_call_forward" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTelefono"
+                style="?attr/textInputFilledStyle"
+                android:layout_width="337dp"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:layout_weight="1"
+                android:clickable="true"
+                android:enabled="false"
+                android:hint="@string/tvTelefono"
+                app:endIconDrawable="@android:drawable/stat_sys_phone_call_forward"
+                app:startIconCheckable="true">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:longClickable="true"
+                    android:onClick="dialPhoneNumber" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
@@ -97,14 +117,29 @@
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilWifi"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/cbWifi">
 
-        <TextView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvWifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+       <!-- <TextView
             android:id="@+id/tvWifi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:padding="10dp"
-            android:text="@string/cbWifi" />
+            android:text="@string/cbWifi" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,7 +149,7 @@
             <ImageView
                 android:id="@+id/ivCentro"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="220dp"
                 android:layout_weight="1"
                 android:enabled="false" />
 
@@ -131,64 +166,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <!--<Button
+            <!--<Button
                     android:id="@+id/btMod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/btModificar" />-->
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btMod"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#D5ECE7"
-                    android:text="@string/btModificar"
-                    android:textStyle="bold"
-                    app:cornerRadius="16dp"
-                    app:iconGravity="textStart"
-                    app:iconSize="24dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btMod"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#D5ECE7"
+                android:text="@string/btModificar"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:iconGravity="textStart" />
 
-                <!--<Button
+            <!--<Button
                     android:id="@+id/btDelete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/btDelete" />-->
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btDelete"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#D5ECE7"
-                    android:text="@string/btDelete"
-                    android:textStyle="bold"
-                    app:cornerRadius="16dp"
-                    app:iconGravity="textStart"
-                    app:iconSize="24dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btDelete"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#D5ECE7"
+                android:text="@string/btDelete"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:iconGravity="textStart" />
 
-                <!--                app:icon="@drawable/ic_modify"-->
-            </LinearLayout>
-
+            <!--                app:icon="@drawable/ic_modify"-->
         </LinearLayout>
 
     </LinearLayout>
