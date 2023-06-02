@@ -13,7 +13,7 @@
     <string name="tvNumRegistro">Register Number</string>
     <string name="tvTelefono">Phone</string>
     <string name="tvEmail">Email</string>
-    <string name="cbWifi">Has Wifi</string>
+    <string name="cbWifi">Wifi</string>
     <string name="btSelectPhoto">Select photo</string>
     <string name="btregister">Register</string>
     <string name="btcancel">Cancel</string>
@@ -51,4 +51,5 @@
     <string name="titProfesinales">Profesionals</string>
     <string name="titResidentes">Residents</string>
     <string name="titCentros">Centers</string>
+    <string name="centroNombreVacio">El centro debe tener un nombre</string>
 </resources>
