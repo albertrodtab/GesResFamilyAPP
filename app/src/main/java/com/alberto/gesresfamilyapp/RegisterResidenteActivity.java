@@ -25,6 +25,8 @@ import com.alberto.gesresfamilyapp.domain.Residente;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -40,11 +42,16 @@ public class RegisterResidenteActivity extends AppCompatActivity {
 
     private boolean isModifyResidente;
     private AppDatabase db;
-    private EditText etNombre;
-    private EditText etApellidos;
-    private EditText etDni;
+
+    private TextInputLayout tilNombre;
+    private TextInputEditText etNombre;
+    private TextInputLayout tilApellidos;
+    private TextInputEditText etApellidos;
+    private TextInputLayout tilDni;
+    private TextInputEditText etDni;
     //private EditText etFechaNac;
-    private EditText etSexo;
+    private TextInputLayout tilSexo;
+    private TextInputEditText etSexo;
     private ImageView imageView;
 
     private Residente residente;
@@ -100,6 +107,10 @@ public class RegisterResidenteActivity extends AppCompatActivity {
                 }
         );
 
+        tilNombre = findViewById(R.id.tilNombre);
+        tilApellidos = findViewById(R.id.tilApellidos);
+        tilDni = findViewById(R.id.tilDni);
+        tilSexo = findViewById(R.id.tilSexo);
         etNombre = findViewById(R.id.etNombre);
         etApellidos = findViewById(R.id.etApellidos);
         etDni = findViewById(R.id.etDni);
@@ -130,10 +141,10 @@ public class RegisterResidenteActivity extends AppCompatActivity {
 
 
     private void fillData(Residente residente) {
-        etNombre.setText(residente.getNombre());
-        etApellidos.setText(residente.getApellidos());
-        etSexo.setText(residente.getSexo());
-        etDni.setText(residente.getDni());
+        tilNombre.getEditText().setText(residente.getNombre());
+        tilApellidos.getEditText().setText(residente.getApellidos());
+        tilSexo.getEditText().setText(residente.getSexo());
+        tilDni.getEditText().setText(residente.getDni());
         //if (residente.getFechaNacimiento() != null) {
         //    etFechaNac.setText(residente.getFechaNacimiento().toString());
         //} else {
@@ -203,9 +214,9 @@ public class RegisterResidenteActivity extends AppCompatActivity {
     }
 
     public void registerResidente(View view) {
-        String nombre = etNombre.getText().toString();
-        String apellidos = etApellidos.getText().toString();
-        String dni = etDni.getText().toString();
+        String nombre = tilNombre.getEditText().getText().toString();
+        String apellidos = tilApellidos.getEditText().getText().toString();
+        String dni = tilDni.getEditText().getText().toString();
         //Editable editableFechaNac = etFechaNac.getText();
         //String fechaNacString = editableFechaNac.toString();
 
@@ -216,7 +227,7 @@ public class RegisterResidenteActivity extends AppCompatActivity {
         //} catch (ParseException e) {
         //    e.printStackTrace();
         //}
-        String sexo = etSexo.getText().toString();
+        String sexo = tilSexo.getEditText().getText().toString();
 
 
 

@@ -24,6 +24,8 @@ import com.alberto.gesresfamilyapp.domain.Profesional;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -39,11 +41,15 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
 
     private boolean isModifyProfesional;
     private AppDatabase db;
-    private EditText etNombre;
-    private EditText etApellidos;
-    private EditText etDni;
+    private TextInputLayout tilNombre;
+    private TextInputEditText etNombre;
+    private TextInputLayout tilApellidos;
+    private TextInputEditText etApellidos;
+    private TextInputLayout tilDni;
+    private TextInputEditText etDni;
     //private EditText etFechaNac;
-    private EditText etCategoria;
+    private TextInputLayout tilCategoria;
+    private TextInputEditText etCategoria;
     private ImageView imageView;
 
     private Profesional profesional;
@@ -99,6 +105,10 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
                 }
         );
 
+        tilNombre = findViewById(R.id.tilNombre);
+        tilApellidos = findViewById(R.id.tilApellidos);
+        tilDni = findViewById(R.id.tilDni);
+        tilCategoria = findViewById(R.id.tilCategoria);
         etNombre = findViewById(R.id.etNombre);
         etApellidos = findViewById(R.id.etApellidos);
         etDni = findViewById(R.id.etDni);
@@ -129,10 +139,10 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
 
 
     private void fillData(Profesional profesional) {
-        etNombre.setText(profesional.getNombre());
-        etApellidos.setText(profesional.getApellidos());
-        etCategoria.setText(profesional.getCategoria());
-        etDni.setText(profesional.getDni());
+        tilNombre.getEditText().setText(profesional.getNombre());
+        tilApellidos.getEditText().setText(profesional.getApellidos());
+        tilCategoria.getEditText().setText(profesional.getCategoria());
+        tilDni.getEditText().setText(profesional.getDni());
         //if (profesional.getFechaNacimiento() != null) {
         //    etFechaNac.setText(profesional.getFechaNacimiento().toString());
         //} else {
@@ -202,9 +212,9 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
     }
 
     public void registerProfesional(View view) {
-        String nombre = etNombre.getText().toString();
-        String apellidos = etApellidos.getText().toString();
-        String dni = etDni.getText().toString();
+        String nombre = tilNombre.getEditText().getText().toString();
+        String apellidos = tilApellidos.getEditText().getText().toString();
+        String dni = tilDni.getEditText().getText().toString();
         //Editable editableFechaNac = etFechaNac.getText();
         //String fechaNacString = editableFechaNac.toString();
 
@@ -215,7 +225,7 @@ public class RegisterProfesionalActivity extends AppCompatActivity {
         //} catch (ParseException e) {
         //    e.printStackTrace();
         //}
-        String categoria = etCategoria.getText().toString();
+        String categoria = tilCategoria.getEditText().getText().toString();
 
 
 

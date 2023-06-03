@@ -6,27 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ResidentesActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/teal_700"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_options_add"
-        app:navigationIcon="?attr/actionModeCloseDrawable"
-        app:title="@string/titResidentes"
-        app:titleCentered="false"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:titleTextColor="@color/material_dynamic_neutral100" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/teal_700"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:menu="@menu/menu_options_add"
+            app:navigationIcon="?attr/actionModeCloseDrawable"
+            app:title="@string/titResidentes"
+            app:titleCentered="false"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:titleTextColor="@color/material_dynamic_neutral100" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/residentes_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:longClickable="true"
-            android:scrollIndicators="right"
-            app:layout_constraintTop_toBottomOf="@id/topAppBar" />
+            android:scrollIndicators="right" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
