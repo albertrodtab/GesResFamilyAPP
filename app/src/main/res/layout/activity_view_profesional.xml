@@ -16,7 +16,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNombre"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/tvNombre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilApellidos"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/tvApellidos">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDni"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/tvDni">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCategoria"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/tvCategoria">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!--<TextView
             android:id="@+id/tvNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,20 +102,20 @@
             android:padding="10dp"
             android:text="@string/tvDni" />
 
-       <!-- <TextView
+       &lt;!&ndash; <TextView
             android:id="@+id/tvProfesionalFechaNac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:padding="10dp"
-            android:text="Fecha Nacimiento" />-->
+            android:text="Fecha Nacimiento" />&ndash;&gt;
 
         <TextView
             android:id="@+id/tvCategoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="@string/tvCategoria" />
+            android:text="@string/tvCategoria" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,7 +131,11 @@
         </LinearLayout>
 
         <LinearLayout
+
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -78,8 +147,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout">
+-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btMod"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#D5ECE7"
+                android:text="@string/btModificar"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:iconGravity="textStart" />
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btDelete"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#D5ECE7"
+                android:text="@string/btDelete"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:iconGravity="textStart" />
+
+
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -96,7 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/btDelete" />
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
 
