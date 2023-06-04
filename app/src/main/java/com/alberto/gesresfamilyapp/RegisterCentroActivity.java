@@ -29,6 +29,7 @@ import androidx.room.Room;
 
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -216,11 +217,11 @@ public class RegisterCentroActivity extends AppCompatActivity {
     private void loadImage(String photoUriString) {
         if (photoUriString != null) {
             Uri photoUri = Uri.parse(photoUriString);
-            Picasso.get()
+            Glide.with(this)
                     .load(photoUri)
                     .into(imageView);
         } else {
-            Picasso.get()
+            Glide.with(this)
                     .load(R.drawable.icons8_city_buildings_100)
                     .into(imageView);
         }
@@ -267,7 +268,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
             return;
         }
 
-        //Conseguimos la ruta de almacenamiento, si no existe, la creamos
+       /* //Conseguimos la ruta de almacenamiento, si no existe, la creamos
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "GesResFamilyApp");
         if (!storageDir.exists()) {
             storageDir.mkdirs();
@@ -276,7 +277,7 @@ public class RegisterCentroActivity extends AppCompatActivity {
         //Le ponemos nombre al archivo y la extension
         File imageFile = new File(storageDir, System.currentTimeMillis() + ".jpg");
         Log.i("RegisterCentro", "register - filePath: " + imageFile);
-
+*/
         if (isModifyCentro) {
             centro.setNombre(nombre);
             centro.setDireccion(direccion);
