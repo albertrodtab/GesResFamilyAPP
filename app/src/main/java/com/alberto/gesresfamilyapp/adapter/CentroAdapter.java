@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.List;
