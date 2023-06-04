@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alberto.gesresfamilyapp.adapter.CentroAdapter;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
 import com.bumptech.glide.Glide;
@@ -43,6 +44,7 @@ public class ViewCentroActivity extends AppCompatActivity {
     private ImageView imageView;
     TextInputLayout telefono = findViewById(R.id.tilTelefono);
     private PointAnnotationManager pointAnnotationManager;
+    private CentroAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class ViewCentroActivity extends AppCompatActivity {
                 .allowMainThreadQueries().build();
         Centro centro = db.centroDao().getByName(name);
         fillData(centro);
+        loadImage(centro.getPhotoUri());
+        // con esto la lista siempre estára actualizada cuando vuelva de un segundo plano.
+        adapter.notifyDataSetChanged();
 
 
     }
@@ -152,6 +157,8 @@ public class ViewCentroActivity extends AppCompatActivity {
         registro.getEditText().setText(centro.getNumRegistro());
         telefono.getEditText().setText(centro.getTelefono());
         mail.getEditText().setText(centro.getEmail());
+        // Cargar la imagen
+        loadImage(centro.getPhotoUri());
         addCenterToMap(centro);
 
 
