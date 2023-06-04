@@ -18,8 +18,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alberto.gesresfamilyapp.adapter.CentroAdapter;
 import com.alberto.gesresfamilyapp.db.AppDatabase;
 import com.alberto.gesresfamilyapp.domain.Centro;
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.geojson.Point;
 import com.mapbox.maps.CameraOptions;
@@ -31,6 +33,7 @@ import com.mapbox.maps.plugin.annotation.AnnotationPluginImplKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManagerKt;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -38,13 +41,16 @@ public class ViewCentroActivity extends AppCompatActivity {
 
     public List<Centro> centros;
     private MapView mapView;
+    private ImageView imageView;
     TextInputLayout telefono = findViewById(R.id.tilTelefono);
     private PointAnnotationManager pointAnnotationManager;
+    private CentroAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_centro);
+        imageView = findViewById(R.id.ivCentro);
         //mapView = findViewById(R.id.mvCentro);
         initializePointManager();
 
@@ -58,7 +64,25 @@ public class ViewCentroActivity extends AppCompatActivity {
                 .allowMainThreadQueries().build();
         Centro centro = db.centroDao().getByName(name);
         fillData(centro);
+        loadImage(centro.getPhotoUri());
+        // con esto la lista siempre estára actualizada cuando vuelva de un segundo plano.
+        adapter.notifyDataSetChanged();
 
+
+    }
+
+    //Usando la libreria picasso
+    private void loadImage(String photoUriString) {
+        if (photoUriString != null) {
+            Uri photoUri = Uri.parse(photoUriString);
+            Glide.with(this)
+                    .load(photoUri)
+                    .into(imageView);
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.icons8_city_buildings_100)
+                    .into(imageView);
+        }
     }
 
     private void addCenterToMap(Centro centro) {
@@ -125,13 +149,16 @@ public class ViewCentroActivity extends AppCompatActivity {
             tvWifi.getEditText().setText("No tiene Wi-Fi");
         }
 
-        ImageView foto = findViewById(R.id.ivCentro);
+        // Cargar la imagen
+        loadImage(centro.getPhotoUri());
 
         name.getEditText().setText(centro.getNombre());
         direccion.getEditText().setText(centro.getDireccion());
         registro.getEditText().setText(centro.getNumRegistro());
         telefono.getEditText().setText(centro.getTelefono());
         mail.getEditText().setText(centro.getEmail());
+        // Cargar la imagen
+        loadImage(centro.getPhotoUri());
         addCenterToMap(centro);
 
 

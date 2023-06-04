@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
     }
 
     //Patron Holder (ESTO ESTOY OBLIGADO A HACERLO SIEMPRE)
-    //metodo que crea cada estructura de layout donde iran los datos de cada cnetro.
+    //metodo que crea cada estructura de layout donde iran los datos de cada centro.
     @Override
     public CentroHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext())
@@ -71,7 +72,7 @@ public class CentroAdapter extends RecyclerView.Adapter<CentroAdapter.CentroHold
         Centro centro = centroList.get(position);
 
         // Cargar y mostrar la foto en el ImageView
-        String photoUriString = centro.getPhotoUri();
+        String photoUriString = centroList.get(position).getPhotoUri();
         if (photoUriString != null) {
             Uri photoUri = Uri.parse(photoUriString);
             Glide.with(context)
